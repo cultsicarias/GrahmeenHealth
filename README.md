@@ -1,8 +1,11 @@
-# <img src="https://img.icons8.com/color/48/000000/caduceus.png" width="32"/> VaidyaCare - Smart Care Assistant
-
-> 🩺 A modern healthcare platform designed to help doctors manage patient data efficiently and detect potential health issues early.
-
 <div align="center">
+<h1>VaidyaCare</h1>
+<h3>Smart Care Assistant</h3>
+<img src="https://img.icons8.com/color/96/000000/caduceus.png" width="64"/>
+
+<p>
+🩺 A modern healthcare platform designed to help doctors manage patient data efficiently and detect potential health issues early.
+</p>
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
