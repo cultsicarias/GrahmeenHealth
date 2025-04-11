@@ -40,7 +40,8 @@ VaidyaCare is a web application that empowers healthcare providers with intellig
 
 ## 🎯 Solution Objectives
 
-VaidyaCare addresses critical healthcare challenges:
+VaidyaCare addresses critical healthcare challenges: <!-- temp update to trigger commit -->
+
 
 1. **Reduce Medical Errors** - Intelligent symptom tracking and ADR detection
 2. **Optimize Physician Time** - Priority-based scheduling and automated documentation
