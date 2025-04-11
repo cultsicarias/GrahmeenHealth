@@ -1,10 +1,10 @@
-# Riya Healthcare - Smart Care Assistant
+# VaidyaCare - Smart Care Assistant
 
 A modern healthcare platform designed to help doctors manage patient data efficiently and detect potential health issues early. This system enables doctors to track patient symptoms, identify adverse drug reactions, and prioritize appointments based on severity.
 
 ## Project Overview
 
-Riya Healthcare is a web application built with Next.js, MongoDB, and TypeScript, designed for two primary user types:
+VaidyaCare is a web application built with Next.js, MongoDB, and TypeScript, designed for two primary user types:
 
 ### For Doctors
 - Secure dashboard to manage patient information
