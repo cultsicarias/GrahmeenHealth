@@ -21,9 +21,9 @@ VaidyaCare is a web application built with Next.js, MongoDB, and TypeScript, des
 
 ![VaidyaCare Dashboard](https://source.unsplash.com/random/1200x400/?medical,dashboard)
 
-## 🌟 Project Overview
+## 🌟 Project Overview 
 
-VaidyaCare is a web application that empowers healthcare providers with intelligent tools to deliver better patient care:
+VaidyaCare is a web application that empowers healthcare providers with intelligent tools to deliver better patient care: 
 
 ### 👨‍⚕️ For Doctors
 - 🔒 Secure dashboard to manage patient information
