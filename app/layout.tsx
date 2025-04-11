@@ -6,7 +6,7 @@ import Providers from "@/components/Providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Riya Healthcare - Smart Care Assistant",
+  title: "VaidyaCare - Smart Care Assistant",
   description: "A modern healthcare platform for doctors and patients",
 };
 
