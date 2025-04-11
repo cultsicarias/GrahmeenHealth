@@ -1,21 +1,13 @@
-<<<<<<< HEAD
-# VaidyaCare - Smart Care Assistant
-=======
 # <img src="https://img.icons8.com/color/48/000000/caduceus.png" width="32"/> VaidyaCare - Smart Care Assistant
->>>>>>> 8e3ba2c (README)
 
 > 🩺 A modern healthcare platform designed to help doctors manage patient data efficiently and detect potential health issues early.
 
 <div align="center">
 
-<<<<<<< HEAD
-VaidyaCare is a web application built with Next.js, MongoDB, and TypeScript, designed for two primary user types:
-=======
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
->>>>>>> 8e3ba2c (README)
 
 </div>
 
@@ -40,8 +32,7 @@ VaidyaCare is a web application that empowers healthcare providers with intellig
 
 ## 🎯 Solution Objectives
 
-VaidyaCare addresses critical healthcare challenges: <!-- temp update to trigger commit -->
-
+VaidyaCare addresses critical healthcare challenges:
 
 1. **Reduce Medical Errors** - Intelligent symptom tracking and ADR detection
 2. **Optimize Physician Time** - Priority-based scheduling and automated documentation
@@ -201,12 +192,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-<!-- <<-- Updated on April 11-->> -->git add README.md
-git commit -m "Updated README on April 11"
-git push origin main
-
-
-
 <div align="center">
-  <p><i> Made with ❤️ for healthcare professionals and patients </i></p>
+  <p><i>Made with ❤️ for healthcare professionals and patients</i></p>
 </div>
