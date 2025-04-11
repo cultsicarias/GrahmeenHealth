@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -12,7 +12,16 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session } = useSession();
+
+  const handleLogout = () => {
+    if (window.confirm('Are you sure you want to logout?')) {
+      signOut({ redirect: false }).then(() => {
+        router.push('/');
+      });
+    }
+  };
 
   const doctorNavLinks = [
     { name: 'Dashboard', href: '/dashboard', icon: 'grid' },
@@ -85,6 +94,30 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
               </Link>
             ))}
           </nav>
+
+          {/* Add Logout Button at the bottom */}
+          <div className="mt-auto p-4 border-t border-gray-200">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-5 w-5 mr-3" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
+                />
+              </svg>
+              Logout
+            </button>
+          </div>
         </div>
 
         {/* User info */}
