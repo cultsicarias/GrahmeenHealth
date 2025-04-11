@@ -29,6 +29,7 @@ export default function Home() {
                 VaidyaCare
               </span>
             </div>
+<<<<<<< HEAD
             <nav>
               <ul className="flex space-x-6">
                 <li>
@@ -147,6 +148,45 @@ export default function Home() {
                       ))}
                     </ul>
                   </div>
+=======
+            <div className="relative h-[500px]">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-br from-blue-100 to-teal-100 rounded-full opacity-40 animate-pulse"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Smart Features</h2>
+                  <ul className="space-y-4">
+                    {[
+                      { icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2", 
+                        title: "Intelligent Symptom Analysis", 
+                        desc: "AI-powered symptom tracking and analysis" },
+                      { icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", 
+                        title: "Drug Interaction Detection", 
+                        desc: "Instant alerts for potential medication conflicts" },
+                      { icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z", 
+                        title: "Smart Appointment Booking", 
+                        desc: "Priority-based scheduling system",
+                        link: "/dashboard/appointments/symptoms" },
+                      { icon: "M13 10V3L4 14h7v7l9-11h-7z", 
+                        title: "Early Warning System", 
+                        desc: "Proactive health issue detection" },
+                    ].map((item, i) => (
+                      <li 
+                        key={i}
+                        className="flex p-3 rounded-lg hover:bg-blue-50 transition group"
+                      >
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-teal-400 rounded-full flex items-center justify-center flex-shrink-0 mr-4 shadow-md group-hover:shadow-lg transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.icon} />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition">{item.title}</h3>
+                          <p className="text-sm text-gray-500">{item.desc}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+>>>>>>> a3f07bd (patient appointment booking is working now)
                 </div>
               </div>
             </div>

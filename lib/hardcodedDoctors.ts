@@ -41,9 +41,9 @@ export const hardcodedDoctors: HardcodedDoctor[] = [
     qualifications: "MD, FACC",
     licenseNumber: "CAR12345",
     availability: {
-      days: ["Mon", "Tue", "Wed", "Fri"],
-      startTime: "09:00",
-      endTime: "17:00"
+      days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      startTime: "10:00",
+      endTime: "18:00"
     },
     about: "Specialized in cardiovascular diseases with over 12 years of clinical experience.",
     imageUrl: "https://randomuser.me/api/portraits/women/25.jpg",
@@ -78,9 +78,9 @@ export const hardcodedDoctors: HardcodedDoctor[] = [
     qualifications: "MD, PhD",
     licenseNumber: "NEU54321",
     availability: {
-      days: ["Mon", "Wed", "Thu", "Fri"],
-      startTime: "08:30",
-      endTime: "16:30"
+      days: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      startTime: "10:00",
+      endTime: "18:00"
     },
     about: "Board-certified neurologist specializing in headache disorders and stroke treatment.",
     imageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
