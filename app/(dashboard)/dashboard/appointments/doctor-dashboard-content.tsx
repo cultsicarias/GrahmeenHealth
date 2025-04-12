@@ -286,11 +286,10 @@ export default function DoctorDashboardContent() {
   });
 
   const getStatusColor = (status: string) => {
+    if(status === 'treated') {
+      return 'text-green-600 bg-green-100';
+    }
     const colors = {
-      scheduled: 'bg-blue-100 text-blue-800',
-      'in-progress': 'bg-yellow-100 text-yellow-800',
-      completed: 'bg-green-100 text-green-800',
-      cancelled: 'bg-red-100 text-red-800',
       critical: 'bg-red-100 text-red-800',
       stable: 'bg-green-100 text-green-800',
       improving: 'bg-yellow-100 text-yellow-800'
