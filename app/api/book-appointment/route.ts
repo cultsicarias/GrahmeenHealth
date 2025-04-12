@@ -14,7 +14,11 @@ export async function POST(req: NextRequest) {
     }
 
     const data = await req.json();
-    console.log('Received booking data:', data);
+    console.log('Received booking data:', {
+      ...data,
+      doctorId: data.doctorId,
+      doctorIdType: typeof data.doctorId
+    });
 
     await connectDB();
     console.log('Connected to MongoDB');

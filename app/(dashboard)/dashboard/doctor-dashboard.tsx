@@ -1,24 +1,27 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import DoctorView from './appointments/doctor-view';
+import DoctorDashboardContent from './appointments/doctor-dashboard-content';
 
 export default function DoctorDashboard() {
   const { data: session } = useSession();
 
+  if (!session?.user) {
+    return null;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow mb-6">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-2xl font-bold text-gray-900">Welcome, Dr. {session?.user?.name}</h1>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold text-gray-900">Doctor Dashboard</h1>
+        <p className="mt-1 text-sm text-gray-500">
+          Manage your appointments and patient records below.
+        </p>
       </div>
 
-      <main>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <DoctorView />
-        </div>
-      </main>
+      <div className="bg-white rounded-lg shadow-sm">
+        <DoctorDashboardContent />
+      </div>
     </div>
   );
 }

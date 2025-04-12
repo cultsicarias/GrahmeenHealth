@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -87,8 +87,29 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
           </nav>
         </div>
 
-        {/* User info */}
-        <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
+        {/* User info and Logout */}
+        <div className="flex-shrink-0 flex flex-col border-t border-gray-200 p-4 space-y-4">
+          <button
+            onClick={() => signOut()}
+            className="flex items-center px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-3 h-5 w-5 text-red-500"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+            Logout
+          </button>
+
           <div className="flex-shrink-0 w-full group block">
             <div className="flex items-center">
               <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600">

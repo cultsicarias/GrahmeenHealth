@@ -156,9 +156,32 @@ export async function GET(request: NextRequest) {
       }));
     } 
     else if (user.role === 'doctor') {
+      console.log('Fetching appointments for doctor:', { 
+        userId: user._id, 
+        isHardcoded: session.user.isHardcoded 
+      });
+
+      // Debug: Check all appointments in the collection
+      const allAppointments = await Appointment.find({}).lean();
+      console.log('All appointments in DB:', JSON.stringify(allAppointments, null, 2));
+
+      // For doctors, we need to use their profileId since that's what's stored in appointments
+      const doctorId = session.user.profileId || user._id.toString();
+      console.log('Using doctorId for query:', doctorId, '(profileId from session:', session.user.profileId, ')')
+
       // Fetch appointments for doctor
-      appointments = await Appointment.find({ doctorId: user._id.toString() })
+      appointments = await Appointment.find({ doctorId })
         .sort({ date: 1 });
+
+      console.log('Found appointments for this doctor:', appointments.length);
+      if (appointments.length === 0) {
+        console.log('Debug - checking doctorId type in DB:', {
+          queryDoctorId: doctorId,
+          queryDoctorIdType: typeof doctorId,
+          firstAppointmentDoctorId: allAppointments[0]?.doctorId,
+          firstAppointmentDoctorIdType: typeof allAppointments[0]?.doctorId
+        });
+      }
         
       // Format with patient information
       appointments = await Promise.all(appointments.map(async (appointment) => {
@@ -175,11 +198,17 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid user role' }, { status: 403 });
     }
 
-    return NextResponse.json({ appointments });
+    return NextResponse.json({ 
+      status: 'success', 
+      data: appointments 
+    });
   } catch (error: any) {
     console.error('Error fetching appointments:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch appointments' },
+      { 
+        status: 'error', 
+        message: error.message || 'Failed to fetch appointments' 
+      },
       { status: 500 }
     );
   }

@@ -24,8 +24,9 @@ interface Appointment {
 export default function AppointmentsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -33,22 +34,29 @@ export default function AppointmentsPage() {
     }
   }, [status, router]);
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await fetch('/api/appointments');
-        if (response.ok) {
-          const data = await response.json();
-          setAppointments(data.appointments);
-        }
-      } catch (error) {
-        console.error('Error fetching appointments:', error);
-      } finally {
-        setLoading(false);
+  const fetchAppointments = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+      const response = await fetch('/api/appointments');
+      const result = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(result.message || 'Failed to fetch appointments');
       }
-    };
 
-    if (session) {
+      setAppointments(result.data || []);
+    } catch (error: any) {
+      console.error('Error:', error);
+      setError(error.message || 'Failed to load appointments');
+      setAppointments([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user) {
       fetchAppointments();
     }
   }, [session]);
@@ -76,7 +84,24 @@ export default function AppointmentsPage() {
         </Link>
       </div>
 
-      {appointments.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center items-center h-32">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+      ) : error ? (
+        <div className="text-center py-8">
+          <p className="text-red-500">{error}</p>
+          <button
+            onClick={() => {
+              setLoading(true);
+              fetchAppointments();
+            }}
+            className="mt-4 text-blue-600 hover:text-blue-700"
+          >
+            Try again
+          </button>
+        </div>
+      ) : appointments.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -142,7 +167,7 @@ export default function AppointmentsPage() {
                 <div className="border-t pt-4">
                   <h4 className="text-sm font-medium text-gray-500 mb-2">Symptoms</h4>
                   <div className="flex flex-wrap gap-2">
-                    {appointment.symptoms.map((symptom, index) => (
+                    {appointment.symptoms.map((symptom: { name: string; severity: string }, index: number) => (
                       <div
                         key={index}
                         className="bg-gray-100 px-3 py-1 rounded-full text-sm text-gray-700"

@@ -53,6 +53,7 @@ export default function DoctorView() {
     totalPatients: 0,
     urgentCases: 0
   });
+  const [error, setError] = useState<string | null>(null);
 
   const getStatusColor = (status: string) => {
     const colors = {
@@ -65,35 +66,56 @@ export default function DoctorView() {
   };
 
   const fetchAppointments = async () => {
+    if (!session?.user?.id) {
+      console.log('No user session found');
+      setError('Please log in to view appointments');
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
-      console.log('Fetching appointments...');
-      console.log('Current user ID:', session?.user?.id);
+      setError(null);
+      console.log('Fetching appointments for doctor:', session.user.id);
 
       const response = await fetch('/api/book-appointment');
-      if (!response.ok) throw new Error('Failed to fetch appointments');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to fetch appointments');
+      }
       
       const data = await response.json();
-      console.log('All appointments:', data.appointments);
+      if (!Array.isArray(data.appointments)) {
+        console.error('Invalid appointments data:', data);
+        throw new Error('Invalid appointments data received');
+      }
+      console.log('Received appointments:', data.appointments.length);
       
       // Filter appointments for the current doctor
       const doctorAppointments = data.appointments.filter((apt: Appointment) => {
-        console.log('Comparing:', { aptDoctorId: apt.doctorId, sessionUserId: session?.user?.id });
-        return apt.doctorId === session?.user?.id;
+        const matches = apt.doctorId === session.user.id;
+        console.log('Appointment check:', { 
+          id: apt._id, 
+          doctorId: apt.doctorId, 
+          sessionId: session.user.id,
+          matches 
+        });
+        return matches;
       });
       
-      console.log('Filtered doctor appointments:', doctorAppointments);
+      console.log('Doctor appointments found:', doctorAppointments.length);
 
       const appointmentsWithInsights = doctorAppointments.map((apt: Appointment) => {
-        const insights = generateAIInsights(apt.symptoms);
-        console.log('Generated insights for appointment:', { aptId: apt._id, insights });
-        return {
-          ...apt,
-          aiInsights: insights
-        };
+        try {
+          const insights = generateAIInsights(apt.symptoms);
+          console.log('Generated insights for:', apt._id);
+          return { ...apt, aiInsights: insights };
+        } catch (error) {
+          console.error('Failed to generate insights for appointment:', apt._id, error);
+          return apt;
+        }
       });
       
-      console.log('Appointments with insights:', appointmentsWithInsights);
       setAppointments(appointmentsWithInsights);
 
       // Calculate stats
@@ -136,27 +158,43 @@ export default function DoctorView() {
   };
 
   const updateStatus = async (appointmentId: string, newStatus: string) => {
+    if (!session?.user?.id) {
+      toast.error('Please log in to update appointment status');
+      return;
+    }
+
     try {
-      console.log('Updating status:', { appointmentId, newStatus });
+      setLoading(true);
+      console.log('Updating appointment status:', { appointmentId, newStatus });
+
       const response = await fetch(`/api/appointments/${appointmentId}/status`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.user.id}`
+        },
+        body: JSON.stringify({ 
+          status: newStatus,
+          doctorId: session.user.id
+        })
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Status update failed:', errorData);
-        throw new Error('Failed to update status');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to update appointment status');
       }
       
       const updatedData = await response.json();
-      console.log('Status updated successfully:', updatedData);
-      toast.success('Status updated successfully');
-      fetchAppointments();
+      console.log('Appointment status updated:', updatedData);
+      
+      toast.success('Appointment status updated successfully');
+      await fetchAppointments(); // Refresh appointments list
     } catch (error) {
-      console.error('Error updating status:', error);
-      toast.error('Failed to update status');
+      const message = error instanceof Error ? error.message : 'Failed to update appointment status';
+      console.error('Error in updateStatus:', message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 

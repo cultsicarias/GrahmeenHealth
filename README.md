@@ -1,6 +1,6 @@
 # <img src="https://img.icons8.com/color/48/000000/caduceus.png" width="32"/> VaidyaCare - Smart Care Assistant
 
-> 🩺 A modern healthcare platform designed to help doctors manage patient data efficiently and detect potential health issues early.
+🩺 A modern healthcare platform designed to help doctors manage patient data efficiently and detect potential health issues early.
 
 <div align="center">
 
