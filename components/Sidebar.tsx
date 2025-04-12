@@ -25,6 +25,7 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
     { name: 'Dashboard', href: '/dashboard', icon: 'grid' },
     { name: 'Appointments', href: '/dashboard/appointments', icon: 'calendar' },
     { name: 'Medical Records', href: '/dashboard/medical-records', icon: 'file-text' },
+    { name: 'Video Call', href: '/dashboard/video-call', icon: 'video' },
     { name: 'Medications', href: '/dashboard/medications', icon: 'pill' },
     { name: 'Profile', href: '/dashboard/profile', icon: 'user' },
   ];
