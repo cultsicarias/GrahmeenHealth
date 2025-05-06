@@ -173,6 +173,13 @@ function renderIcon(icon: string) {
           <polyline points="10 9 9 9 8 9" />
         </>
       );
+    case 'video':
+      return (
+        <>
+          <path d="M23 7l-7 5 7 5V7z" />
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+        </>
+      );
     case 'pill':
       return (
         <>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Register() {
   const router = useRouter();
@@ -252,38 +253,64 @@ export default function Register() {
   
   // Render based on step
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen flex items-center justify-center relative py-12">
+      {/* Background GIF */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 scale-75 origin-center">
+          <Image
+            src="https://i.pinimg.com/originals/ce/b1/1f/ceb11f58fa11f9b8c151cc3a4ce49b71.gif"
+            alt="Medical Technology Background"
+            fill
+            className="object-cover opacity-50"
+            priority
+            quality={100}
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 to-blue-800/70 backdrop-blur-sm"></div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-2xl p-8 bg-black/40 backdrop-blur-md rounded-2xl shadow-xl border border-white/10">
+        <Link
+          href="/"
+          className="absolute top-4 left-4 text-cyan-200 hover:text-cyan-100 transition-colors flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Back
+        </Link>
+
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900">
-            {step === 1 ? 'Create Your Account' : 
-              basicInfo.role === 'doctor' ? 'Doctor Information' : 'Patient Information'}
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent mb-2">
+            VaidyaCare
+          </h1>
+          <h2 className="mt-6 text-2xl font-bold text-white">
+            Create Your Account
           </h2>
-          <p className="mt-2 text-lg text-gray-600">
-            {step === 1 ? 'Fill in your basic details to get started' : 
-              'Please provide additional information to complete your profile'}
+          <p className="mt-2 text-lg text-cyan-200 font-medium">
+            Join our healthcare platform to manage your medical journey
           </p>
         </div>
         
         <div className="mb-8">
-          <div className="flex justify-center items-center">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
-              1
-            </div>
-            <div className={`h-1 w-16 ${step >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`}></div>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
-            }`}>
-              2
-            </div>
-          </div>
-          <div className="flex justify-center mt-2">
-            <span className="text-sm px-4">Basic Info</span>
-            <span className="text-sm px-4">
-              {basicInfo.role === 'doctor' ? 'Doctor Details' : 'Medical Info'}
-            </span>
+          <div className="flex justify-between items-center">
+            {[1, 2].map((stepNum) => (
+              <div key={stepNum} className="flex-1">
+                <div
+                  className={`h-2 rounded-full transition-all ${
+                    step >= stepNum
+                      ? 'bg-gradient-to-r from-cyan-400 to-blue-400'
+                      : 'bg-white/20'
+                  }`}
+                />
+                <p className={`text-base mt-2 font-medium ${
+                  step === stepNum ? 'text-cyan-200' : 'text-cyan-200/50'
+                }`}>
+                  Step {stepNum}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
         
@@ -293,7 +320,9 @@ export default function Register() {
               <div className="flex">
                 <div className="flex-shrink-0">
                   <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
@@ -745,15 +774,6 @@ export default function Register() {
             )}
             
             <div className="mt-8 flex justify-between">
-              {step === 2 && (
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  className="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  Back
-                </button>
-              )}
               <div></div> {/* Spacer for flex justify-between */}
               <button
                 type="submit"
