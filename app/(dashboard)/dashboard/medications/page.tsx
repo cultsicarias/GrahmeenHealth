@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FiPlus, FiTrash2, FiEdit, FiCalendar, FiClock, FiAlertCircle } from 'react-icons/fi';
+import { MdMedication } from 'react-icons/md';
 
 interface Medication {
   _id: string;
@@ -373,15 +374,7 @@ export default function MedicationsPage() {
 
       {medications.length === 0 ? (
         <div className="bg-white shadow rounded-lg p-10 text-center">
-          <svg 
-            className="mx-auto h-16 w-16 text-gray-400" 
-            fill="none" 
-            stroke="currentColor" 
-            viewBox="0 0 24 24" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-          </svg>
+          <MdMedication className="mx-auto h-16 w-16 text-gray-400" />
           <h3 className="mt-4 text-lg font-medium text-gray-900">No medications found</h3>
           <p className="mt-1 text-gray-500">Get started by adding your first medication.</p>
           <button
