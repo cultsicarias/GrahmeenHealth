@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FiClock } from 'react-icons/fi';
 
 interface Appointment {
   _id: string;
@@ -108,13 +109,7 @@ export default function AppointmentsPage() {
           className="text-center py-16 bg-white rounded-lg shadow-md"
         >
           <div className="mb-4">
-            <Image
-              src="/empty-appointments.svg"
-              alt="No appointments"
-              width={200}
-              height={200}
-              className="mx-auto"
-            />
+            <FiClock className="mx-auto h-20 w-20 text-gray-400" />
           </div>
           <h2 className="text-xl font-semibold mb-2">No Appointments Yet</h2>
           <p className="text-gray-600 mb-6">Book your first appointment to get started</p>
