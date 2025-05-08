@@ -18,6 +18,7 @@ export interface Medication {
 
 export interface PatientDocument extends mongoose.Document {
   userId: UserDocument['_id'];
+  phone?: string;
   dateOfBirth?: Date;
   gender?: 'male' | 'female' | 'other';
   bloodGroup?: string;
@@ -43,6 +44,7 @@ const patientSchema = new Schema<PatientDocument>(
       required: true,
       unique: true
     },
+    phone: { type: String },
     dateOfBirth: { type: Date },
     gender: { 
       type: String, 

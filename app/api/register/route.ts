@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       availability,
       about,
       // Patient fields
+      phone,
       dateOfBirth,
       gender,
       bloodGroup,
@@ -118,6 +119,7 @@ export async function POST(req: NextRequest) {
     } else if (role === 'patient') {
       profileData = await Patient.create({
         userId: user._id,
+        phone,
         dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : undefined,
         gender,
         bloodGroup,

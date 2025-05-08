@@ -41,6 +41,7 @@ export default function Register() {
   
   // Patient info (step 2 for patients)
   const [patientInfo, setPatientInfo] = useState({
+    phone: '',
     dateOfBirth: '',
     gender: '',
     bloodGroup: '',
@@ -529,11 +530,22 @@ export default function Register() {
             ) : (
               // Step 2: Patient information
               <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
-                      Date of Birth
-                    </label>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={patientInfo.phone}
+                      onChange={handlePatientInfoChange}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      placeholder="e.g., 9876543210"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
                     <input
                       type="date"
                       id="dateOfBirth"
@@ -541,19 +553,18 @@ export default function Register() {
                       value={patientInfo.dateOfBirth}
                       onChange={handlePatientInfoChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      required
                     />
                   </div>
-                  
                   <div>
-                    <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
-                      Gender
-                    </label>
+                    <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
                     <select
                       id="gender"
                       name="gender"
                       value={patientInfo.gender}
                       onChange={handlePatientInfoChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      required
                     >
                       <option value="">Select</option>
                       <option value="male">Male</option>
@@ -562,18 +573,17 @@ export default function Register() {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label htmlFor="bloodGroup" className="block text-sm font-medium text-gray-700">
-                      Blood Group
-                    </label>
+                    <label htmlFor="bloodGroup" className="block text-sm font-medium text-gray-700">Blood Group</label>
                     <select
                       id="bloodGroup"
                       name="bloodGroup"
                       value={patientInfo.bloodGroup}
                       onChange={handlePatientInfoChange}
                       className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      required
                     >
                       <option value="">Select</option>
                       <option value="A+">A+</option>
@@ -586,11 +596,8 @@ export default function Register() {
                       <option value="O-">O-</option>
                     </select>
                   </div>
-                  
                   <div>
-                    <label htmlFor="height" className="block text-sm font-medium text-gray-700">
-                      Height (cm)
-                    </label>
+                    <label htmlFor="height" className="block text-sm font-medium text-gray-700">Height (cm)</label>
                     <input
                       type="number"
                       id="height"
@@ -601,11 +608,8 @@ export default function Register() {
                       min="0"
                     />
                   </div>
-                  
                   <div>
-                    <label htmlFor="weight" className="block text-sm font-medium text-gray-700">
-                      Weight (kg)
-                    </label>
+                    <label htmlFor="weight" className="block text-sm font-medium text-gray-700">Weight (kg)</label>
                     <input
                       type="number"
                       id="weight"

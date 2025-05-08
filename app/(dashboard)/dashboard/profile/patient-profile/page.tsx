@@ -54,6 +54,7 @@ interface PatientProfile {
     relationship: string;
   };
   visits?: Visit[];
+  phone?: string;
 }
 
 export default function PatientProfilePage() {
@@ -259,6 +260,10 @@ export default function PatientProfilePage() {
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
                     <p className="font-medium text-gray-800">{session?.user?.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Phone Number</p>
+                    <p className="font-medium text-gray-800">{patient.phone || 'Not specified'}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Date of Birth</p>

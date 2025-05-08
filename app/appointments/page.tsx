@@ -33,6 +33,29 @@ export default function AppointmentsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [patientInfo, setPatientInfo] = useState({
+    dateOfBirth: '',
+    gender: '',
+    bloodGroup: '',
+    height: '',
+    weight: '',
+    phone: '',
+    allergies: [''],
+    medicalConditions: [{
+      name: '',
+      severity: 'mild'
+    }],
+    medications: [{
+      name: '',
+      dosage: '',
+      frequency: ''
+    }],
+    emergencyContact: {
+      name: '',
+      phone: '',
+      relationship: ''
+    }
+  });
 
   useEffect(() => {
     const fetchAppointments = async () => {
