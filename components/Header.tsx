@@ -6,6 +6,7 @@ interface HeaderProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
+
 // Update the navigation links to include doctors and appointments
 const navigation = [
   { name: 'Home', href: '/' },
