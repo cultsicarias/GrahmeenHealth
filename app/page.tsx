@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { translations } from './utils/translations';
+import HospitalMap from './components/HospitalMap';
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -16,6 +17,7 @@ const Home = () => {
   const [scrolled, setScrolled] = useState(false);
   const [language, setLanguage] = useState('en');
   const [isTranslating, setIsTranslating] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,8 +37,13 @@ const Home = () => {
 
   const t = translations[language as keyof typeof translations];
 
+  const handleCloseMap = () => {
+    setShowMap(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {showMap && <HospitalMap onClose={handleCloseMap} />}
       <div className="relative z-10">
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
@@ -77,6 +84,15 @@ const Home = () => {
                     </svg>
                   </>
                 )}
+              </button>
+              <button
+                onClick={() => setShowMap(true)}
+                className="text-lg font-semibold bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all shadow-lg hover:shadow-green-500/30 flex items-center gap-2"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                Find Hospitals
               </button>
               <Link href="/login" className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20">
                 Login
