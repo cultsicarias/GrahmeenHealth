@@ -374,7 +374,7 @@ const MedicalChatbot = () => {
     // Check for specific pain types
     for (const [type, patterns] of Object.entries(healthComplaintPatterns[lang].specificPain)) {
       if (patterns.some(pattern => lowerMessage.includes(pattern))) {
-        return healthComplaintResponses[lang].specificPain[type as keyof typeof healthComplaintResponses[typeof lang].specificPain];
+        return healthComplaintResponses[lang].specificPain[type as keyof (typeof healthComplaintResponses)['en']['specificPain']];
       }
     }
 
