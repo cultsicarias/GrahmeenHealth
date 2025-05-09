@@ -117,6 +117,92 @@ const farewellPatterns = {
   kn: ['ಬೈ', 'ವಿದಾಯ', 'ಧನ್ಯವಾದಗಳು', 'ನಮಸ್ಕಾರ']
 };
 
+// Add health complaint patterns
+const healthComplaintPatterns = {
+  en: {
+    sick: ['feeling sick', 'not feeling well', 'feeling unwell', 'feeling ill', 'feeling bad'],
+    pain: ['pain', 'hurting', 'hurts', 'ache', 'aching'],
+    specificPain: {
+      head: ['headache', 'head pain', 'head hurting', 'head ache'],
+      stomach: ['stomach ache', 'stomach pain', 'tummy ache', 'belly ache', 'abdominal pain'],
+      back: ['back pain', 'backache', 'back hurting'],
+      throat: ['sore throat', 'throat pain', 'throat hurting'],
+      chest: ['chest pain', 'chest discomfort', 'chest hurting'],
+      joint: ['joint pain', 'joint ache', 'joints hurting'],
+      muscle: ['muscle pain', 'muscle ache', 'muscles hurting']
+    }
+  },
+  hi: {
+    sick: ['बीमार महसूस कर रहा हूं', 'अच्छा नहीं लग रहा', 'बीमार लग रहा है', 'तबीयत ठीक नहीं है'],
+    pain: ['दर्द', 'पीड़ा', 'पीड़ित', 'दुखना'],
+    specificPain: {
+      head: ['सिरदर्द', 'सिर में दर्द', 'सिर दुख रहा है'],
+      stomach: ['पेट दर्द', 'पेट में दर्द', 'पेट खराब'],
+      back: ['पीठ दर्द', 'कमर दर्द', 'पीठ में दर्द'],
+      throat: ['गला खराब', 'गले में दर्द', 'गला दुख रहा है'],
+      chest: ['छाती में दर्द', 'सीने में दर्द', 'छाती दुख रही है'],
+      joint: ['जोड़ों में दर्द', 'जोड़ दुख रहे हैं'],
+      muscle: ['मांसपेशियों में दर्द', 'मांसपेशियां दुख रही हैं']
+    }
+  },
+  kn: {
+    sick: ['ಅನಾರೋಗ್ಯ ಅನುಭವಿಸುತ್ತಿದ್ದೇನೆ', 'ಒಳ್ಳೆಯದಾಗಿಲ್ಲ', 'ಅನಾರೋಗ್ಯವಾಗಿದೆ', 'ಆರೋಗ್ಯ ಚೆನ್ನಾಗಿಲ್ಲ'],
+    pain: ['ನೋವು', 'ವೇದನೆ', 'ನೋವಾಗುತ್ತಿದೆ', 'ತೊಂದರೆ'],
+    specificPain: {
+      head: ['ತಲೆನೋವು', 'ತಲೆಯಲ್ಲಿ ನೋವು', 'ತಲೆ ನೋವಾಗುತ್ತಿದೆ'],
+      stomach: ['ಹೊಟ್ಟೆ ನೋವು', 'ಹೊಟ್ಟೆಯಲ್ಲಿ ನೋವು', 'ಹೊಟ್ಟೆ ತೊಂದರೆ'],
+      back: ['ಬೆನ್ನಿನ ನೋವು', 'ಬೆನ್ನು ನೋವು', 'ಬೆನ್ನಿನಲ್ಲಿ ನೋವು'],
+      throat: ['ಗಂಟಲು ನೋವು', 'ಗಂಟಲಿನಲ್ಲಿ ನೋವು', 'ಗಂಟಲು ತೊಂದರೆ'],
+      chest: ['ಎದೆ ನೋವು', 'ಎದೆಯಲ್ಲಿ ನೋವು', 'ಎದೆ ತೊಂದರೆ'],
+      joint: ['ಜಂಟಿ ನೋವು', 'ಜಂಟಿಗಳಲ್ಲಿ ನೋವು'],
+      muscle: ['ಸ್ನಾಯು ನೋವು', 'ಸ್ನಾಯುಗಳಲ್ಲಿ ನೋವು']
+    }
+  }
+};
+
+// Add health complaint responses
+const healthComplaintResponses = {
+  en: {
+    sick: "I'm sorry to hear you're not feeling well. Could you please tell me more about your symptoms? This will help me provide better guidance.",
+    pain: "I understand you're experiencing pain. Could you please specify where the pain is and how long you've been experiencing it?",
+    specificPain: {
+      head: "I understand you have a headache. Common causes include stress, dehydration, or lack of sleep. Try resting in a quiet, dark room and staying hydrated. If the pain is severe or persists, please consult a doctor.",
+      stomach: "I understand you have stomach pain. This could be due to various reasons like indigestion, food sensitivity, or other digestive issues. Try resting and avoiding heavy meals. If the pain is severe or accompanied by other symptoms, please seek medical attention.",
+      back: "I understand you have back pain. This could be due to poor posture, muscle strain, or other factors. Try gentle stretching and maintaining good posture. If the pain is severe or persists, please consult a healthcare provider.",
+      throat: "I understand you have a sore throat. This could be due to a viral infection or other causes. Try resting your voice, staying hydrated, and using warm salt water gargles. If symptoms persist or worsen, please see a doctor.",
+      chest: "I understand you're experiencing chest pain. This could be serious and requires immediate medical attention. Please call emergency services or visit the nearest hospital right away.",
+      joint: "I understand you have joint pain. This could be due to various factors like overuse, injury, or underlying conditions. Try resting the affected joint and applying ice if there's swelling. If the pain persists, please consult a doctor.",
+      muscle: "I understand you have muscle pain. This could be due to overexertion, stress, or other factors. Try gentle stretching, rest, and applying ice or heat as appropriate. If the pain is severe or persists, please seek medical advice."
+    }
+  },
+  hi: {
+    sick: "मुझे खेद है कि आप अच्छा महसूस नहीं कर रहे हैं। क्या आप कृपया अपने लक्षणों के बारे में अधिक बता सकते हैं? इससे मुझे बेहतर मार्गदर्शन प्रदान करने में मदद मिलेगी।",
+    pain: "मैं समझता हूं कि आप दर्द का अनुभव कर रहे हैं। क्या आप कृपया बता सकते हैं कि दर्द कहां है और आप इसे कितने समय से अनुभव कर रहे हैं?",
+    specificPain: {
+      head: "मैं समझता हूं कि आपको सिरदर्द है। सामान्य कारणों में तनाव, निर्जलीकरण, या नींद की कमी शामिल है। शांत, अंधेरे कमरे में आराम करें और हाइड्रेटेड रहें। यदि दर्द गंभीर है या बना रहता है, तो कृपया डॉक्टर से परामर्श करें।",
+      stomach: "मैं समझता हूं कि आपको पेट दर्द है। यह अपच, भोजन संवेदनशीलता, या अन्य पाचन समस्याओं के कारण हो सकता है। विश्रांति प्राप्त करें और भारी भोजन से बचें। यदि दर्द गंभीर है या अन्य लक्षणों के साथ है, तो कृपया चिकित्सकीय सहायता लें।",
+      back: "मैं समझता हूं कि आपको पीठ दर्द है। यह खराब मुद्रा, मांसपेशियों में खिंचाव, या अन्य कारकों के कारण हो सकता है। हल्का स्ट्रेचिंग करें और अच्छी मुद्रा बनाए रखें। यदि दर्द गंभीर है या बना रहता है, तो कृपया स्वास्थ्य सेवा प्रदाता से परामर्श करें।",
+      throat: "मैं समझता हूं कि आपको गला खराब है। यह वायरल संक्रमण या अन्य कारणों से हो सकता है। अपनी आवाज को आराम दें, हाइड्रेटेड रहें, और गर्म नमक के पानी से गरारे करें। यदि लक्षण बने रहते हैं या बिगड़ते हैं, तो कृपया डॉक्टर से मिलें।",
+      chest: "मैं समझता हूं कि आप छाती में दर्द का अनुभव कर रहे हैं। यह गंभीर हो सकता है और तत्काल चिकित्सकीय ध्यान देने की आवश्यकता है। कृपया तुरंत आपातकालीन सेवाओं को कॉल करें या निकटतम अस्पताल में जाएं।",
+      joint: "मैं समझता हूं कि आपको जोड़ों में दर्द है। यह अधिक उपयोग, चोट, या अंतर्निहित स्थितियों के कारण हो सकता है। प्रभावित जोड़ को आराम दें और सूजन होने पर बर्फ लगाएं। यदि दर्द बना रहता है, तो कृपया डॉक्टर से परामर्श करें।",
+      muscle: "मैं समझता हूं कि आपको मांसपेशियों में दर्द है। यह अधिक परिश्रम, तनाव, या अन्य कारकों के कारण हो सकता है। हल्का स्ट्रेचिंग करें, विश्रांति प्राप्त करें, और सूचन होने पर बर्फ या शाख अन्वय करें। यदि दर्द गंभीर है या बना रहता है, तो कृपया वೈದ್ಯಕೀಯ सलाह लें।"
+    }
+  },
+  kn: {
+    sick: "ನೀವು ಒಳ್ಳೆಯದಾಗಿ ಭಾವಿಸುತ್ತಿಲ್ಲ ಎಂದು ಕೇಳಿ ವಿಷಾದವಾಗಿದೆ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಲಕ್ಷಣಗಳ ಬಗ್ಗೆ ಹೆಚ್ಚು ಹೇಳಬಹುದೇ? ಇದು ನನಗೆ ಉತ್ತಮ ಮಾರ್ಗದರ್ಶನ ನೀಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
+    pain: "ನೀವು ನೋವನ್ನು ಅನುಭವಿಸುತ್ತಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ದಯವಿಟ್ಟು ನೋವು ಎಲ್ಲಿ ಇದೆ ಮತ್ತು ನೀವು ಅದನ್ನು ಎಷ್ಟು ಕಾಲ ಅನುಭವಿಸುತ್ತಿದ್ದೀರಿ ಎಂದು ಸೂಚಿಸಬಹುದೇ?",
+    specificPain: {
+      head: "ನೀವು ತಲೆನೋವು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಸಾಮಾನ್ಯ ಕಾರಣಗಳು ಒತ್ತಡ, ನಿರ್ಜಲೀಕರಣ, ಅಥವಾ ನಿದ್ರೆಯ ಕೊರತೆ. ಶಾಂತ, ಕತ್ತಲೆಯ ಕೋಣೆಯಲ್ಲಿ ವಿಶ್ರಾಂತಿ ಪಡೆಯಿರಿ ಮತ್ತು ನೀರನ್ನು ಸಾಕಷ್ಟು ಕುಡಿಯಿರಿ. ನೋವು ತೀವ್ರವಾಗಿದ್ದರೆ ಅಥವಾ ಮುಂದುವರಿದರೆ, ದಯವಿಟ್ಟು ವೈದ್ಯರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+      stomach: "ನೀವು ಹೊಟ್ಟೆ ನೋವು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಇದು ಅಜೀರ್ಣ, ಆಹಾರ ಸಂವೇದನಾಶೀಲತೆ, ಅಥವಾ ಇತರ ಜೀರ್ಣಕ್ರಿಯೆ ಸಮಸ್ಯೆಗಳಿಂದಾಗಿರಬಹುದು. ವಿಶ್ರಾಂತಿ ಪಡೆಯಿರಿ ಮತ್ತು ಭಾರೀ ಊಟಗಳನ್ನು ತಪ್ಪಿಸಿರಿ. ನೋವು ತೀವ್ರವಾಗಿದ್ದರೆ ಅಥವಾ ಇತರ ಲಕ್ಷಣಗಳೊಂದಿಗೆ ಇದ್ದರೆ, ದಯವಿಟ್ಟು ವೈದ್ಯಕೀಯ ಸಹಾಯ ಪಡೆಯಿರಿ.",
+      back: "ನೀವು ಬೆನ್ನಿನ ನೋವು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಇದು ಕೆಟ್ಟ ಭಂಗಿ, ಸ್ನಾಯು ಒತ್ತಡ, ಅಥವಾ ಇತರ ಅಂಶಗಳಿಂದಾಗಿರಬಹುದು. ಸೌಮ್ಯ ಸ್ಟ್ರೆಚಿಂಗ್ ಮಾಡಿ ಮತ್ತು ಒಳ್ಳೆಯ ಭಂಗಿ ಕಾಪಾಡಿಕೊಳ್ಳಿ. ನೋವು ತೀವ್ರವಾಗಿದ್ದರೆ ಅಥವಾ ಮುಂದುವರಿದರೆ, ದಯವಿಟ್ಟು ಆರೋಗ್ಯ ಸೇವಾ ಪೂರೈಕೆದಾರರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+      throat: "ನೀವು ಗಂಟಲು ನೋವು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಇದು ವೈರಲ್ ಸೋಂಕು ಅಥವಾ ಇತರ ಕಾರಣಗಳಿಂದಾಗಿರಬಹುದು. ನಿಮ್ಮ ಧ್ವನಿಗೆ ವಿಶ್ರಾಂತಿ ನೀಡಿ, ನೀರನ್ನು ಸಾಕಷ್ಟು ಕುಡಿಯಿರಿ, ಮತ್ತು ಬಿಸಿ ಉಪ್ಪು ನೀರಿನಿಂದ ಗಾರ್ಗಲ್ ಮಾಡಿ. ಲಕ್ಷಣಗಳು ಮುಂದುವರಿದರೆ ಅಥವಾ ಕೆಟ್ಟದಾಗಿದ್ದರೆ, ದಯವಿಟ್ಟು ವೈದ್ಯರನ್ನು ನೋಡಿ.",
+      chest: "ನೀವು ಎದೆ ನೋವು ಅನುಭವಿಸುತ್ತಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಇದು ಗಂಭೀರವಾಗಿರಬಹುದು ಮತ್ತು ತತ್ಕ್ಷಣದ ವೈದ್ಯಕೀಯ ಗಮನ ಅಗತ್ಯವಿದೆ. ದಯವಿಟ್ಟು ತಕ್ಷಣ ತುರ್ತು ಸೇವೆಗಳನ್ನು ಕರೆ ಮಾಡಿ ಅಥವಾ ಹತ್ತಿರದ ಆಸ್ಪತ್ರೆಗೆ ಹೋಗಿ.",
+      joint: "ನೀವು ಜಂಟಿ ನೋವು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಇದು ಅತಿಯಾದ ಬಳಕೆ, ಗಾಯ, ಅಥವಾ ಮೂಲ ಸ್ಥಿತಿಗಳಿಂದಾಗಿರಬಹುದು. ಪೀಡಿತ ಜಂಟಿಗೆ ವಿಶ್ರಾಂತಿ ನೀಡಿ ಮತ್ತು ಊತ ಇದ್ದರೆ ಮಂಜುಗಡ್ಡೆ ಹಾಕಿ. ನೋವು ಮುಂದುವರಿದರೆ, ದಯವಿಟ್ಟು ವೈದ್ಯರನ್ನು ಸಂಪರ್ಕಿಸಿ.",
+      muscle: "ನೀವು ಸ್ನಾಯು ನೋವು ಹೊಂದಿದ್ದೀರಿ ಎಂದು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಇದು ಅತಿಯಾದ ದುಡಿಮೆ, ಒತ್ತಡ, ಅಥವಾ ಇತರ ಅಂಶಗಳಿಂದಾಗಿರಬಹುದು. ಸೌಮ್ಯ ಸ್ಟ್ರೆಚಿಂಗ್ ಮಾಡಿ, ವಿಶ್ರಾಂತಿ ಪಡೆಯಿರಿ, ಮತ್ತು ಸೂಕ್ತವಾಗಿ ಮಂಜುಗಡ್ಡೆ ಅಥವಾ ಶಾಖವನ್ನು ಅನ್ವಯಿಸಿ. ನೋವು ತೀವ್ರವಾಗಿದ್ದರೆ ಅಥವಾ ಮುಂದುವರಿದರೆ, ದಯವಿಟ್ಟು ವೈದ್ಯಕೀಯ ಸಲಹೆ ಪಡೆಯಿರಿ."
+    }
+  }
+};
+
 // Add type declarations for the Web Speech API
 interface SpeechRecognitionEvent extends Event {
   results: SpeechRecognitionResultList;
@@ -272,6 +358,29 @@ const MedicalChatbot = () => {
     }
   };
 
+  const checkHealthComplaint = (message: string, lang: Language) => {
+    const lowerMessage = message.toLowerCase();
+    
+    // Check for general sick feeling
+    if (healthComplaintPatterns[lang].sick.some(pattern => lowerMessage.includes(pattern))) {
+      return healthComplaintResponses[lang].sick;
+    }
+
+    // Check for general pain
+    if (healthComplaintPatterns[lang].pain.some(pattern => lowerMessage.includes(pattern))) {
+      return healthComplaintResponses[lang].pain;
+    }
+
+    // Check for specific pain types
+    for (const [type, patterns] of Object.entries(healthComplaintPatterns[lang].specificPain)) {
+      if (patterns.some(pattern => lowerMessage.includes(pattern))) {
+        return healthComplaintResponses[lang].specificPain[type as keyof typeof healthComplaintResponses[typeof lang].specificPain];
+      }
+    }
+
+    return null;
+  };
+
   const handleSendMessage = async (message: string) => {
     if (!message.trim()) return;
 
@@ -314,6 +423,16 @@ const MedicalChatbot = () => {
         setMessages([
           ...newMessages,
           { role: 'assistant' as const, content: generalResponses[language].goodbye }
+        ]);
+        return;
+      }
+
+      // Check for health complaints
+      const healthResponse = checkHealthComplaint(message, language);
+      if (healthResponse) {
+        setMessages([
+          ...newMessages,
+          { role: 'assistant' as const, content: healthResponse + '\n\n' + translations[language].disclaimer }
         ]);
         return;
       }

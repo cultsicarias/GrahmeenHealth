@@ -4,7 +4,8 @@ A modern healthcare platform designed to bridge the gap between healthcare provi
 
 ## 🌟 Features
 
-- **Multi-language Support**: Seamlessly switch between English and Hindi
+- **Multi-language Support**: Seamlessly switch between English, Hindi, and Kannada
+- **AI-Powered Chatbot**: Intelligent medical assistant with emergency response capabilities
 - **User Roles**: Separate interfaces for doctors and patients
 - **Early Detection**: AI-powered health assessment tools
 - **Appointment Management**: Easy scheduling and tracking of medical appointments
@@ -41,6 +42,7 @@ A modern healthcare platform designed to bridge the gap between healthcare provi
    MONGODB_URI=your_mongodb_connection_string
    NEXTAUTH_SECRET=your_nextauth_secret
    NEXTAUTH_URL=http://localhost:3000
+   GOOGLE_AI_API_KEY=your_google_ai_api_key
    ```
 
 4. Run the development server:
@@ -53,15 +55,28 @@ A modern healthcare platform designed to bridge the gap between healthcare provi
 ## 📱 Key Features in Detail
 
 ### Multi-language Support
-- Seamless switching between English and Hindi
+- Seamless switching between English, Hindi, and Kannada
 - Real-time translation using Google Gemini AI
 - Culturally appropriate content for both languages
+- Language-specific emergency keywords detection
+- Automatic language detection and response
+
+### AI-Powered Medical Chatbot
+- Intelligent medical assistance
+- Emergency situation detection and response
+- Multi-language support for patient communication
+- General chat responses for common queries
+- Context-aware medical advice
+- Emergency contact information and guidance
+- Real-time translation of medical terms
 
 ### User Interface
 - Modern, responsive design
 - Intuitive navigation
 - Accessibility features
 - Dark mode support
+- Language selection dropdown
+- Real-time chat interface
 
 ### Healthcare Features
 - Doctor registration and profile management
@@ -70,6 +85,7 @@ A modern healthcare platform designed to bridge the gap between healthcare provi
 - Medical records management
 - Emergency services integration
 - Rural healthcare specific features
+- Multi-language medical documentation
 
 ## 🤝 Contributing
 
@@ -96,9 +112,14 @@ Developed by Team Access Denied
 - [ ] Add support for more Indian languages
 - [ ] Implement offline mode for rural areas
 - [ ] Add mobile app version
+- [ ] Enhance emergency response system
+- [ ] Add voice input support for chatbot
+- [ ] Implement regional language support for medical terms
 
 ## ⚠️ Important Notes
 
 - This is a healthcare platform, so all data handling must comply with healthcare data protection standards
 - Regular security audits are performed
 - All medical advice should be verified by healthcare professionals
+- Emergency features are for initial response only - always contact emergency services in critical situations
+- Language translations are AI-powered and should be verified by medical professionals
