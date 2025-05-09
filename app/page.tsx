@@ -92,12 +92,23 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden">
       {showMap && <HospitalMap onClose={handleCloseMap} />}
       
-      {/* Simple Background */}
+      {/* Background GIF */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
+        <div className="absolute inset-0">
+          <Image
+            src="https://i.imgflip.com/9tg7b1.gif"
+            alt="Medical Technology Background"
+            fill
+            className="object-cover"
+            priority
+            quality={100}
+            unoptimized
+          />
+        </div>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
       </div>
 
       {/* SOS Button */}
@@ -194,7 +205,7 @@ const Home = () => {
         }`}>
           <div className="container mx-auto px-4 flex justify-between items-center">
             <div className="flex items-center">
-              <span className="text-3xl md:text-4xl font-black bg-gradient-to-r from-rose-600 via-pink-600 to-fuchsia-600 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)] hover:from-rose-500 hover:via-pink-500 hover:to-fuchsia-500 transition-all duration-300">
+              <span className="text-3xl md:text-4xl font-black bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] hover:from-cyan-200 hover:via-blue-200 hover:to-white transition-all duration-300">
                 GrahmeenHealth
               </span>
             </div>
@@ -202,7 +213,7 @@ const Home = () => {
               <button
                 onClick={toggleLanguage}
                 disabled={isTranslating}
-                className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20 flex items-center gap-2 disabled:opacity-50"
+                className="text-lg font-semibold text-white hover:text-cyan-200 transition-colors px-4 py-2 rounded-lg hover:bg-white/10 flex items-center gap-2 disabled:opacity-50"
               >
                 {isTranslating ? (
                   <span className="animate-spin">⟳</span>
@@ -262,7 +273,7 @@ const Home = () => {
               </div>
             </motion.div>
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-rose-600 via-pink-600 to-fuchsia-600 text-transparent bg-clip-text drop-shadow-[0_2px_2px_rgba(0,0,0,0.1)] leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-200 to-blue-200 text-transparent bg-clip-text drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] leading-tight"
               variants={fadeIn}
             >
               {t.hero.title}
@@ -272,7 +283,7 @@ const Home = () => {
               variants={fadeIn}
             >
               <motion.p 
-                className="text-xl md:text-2xl lg:text-3xl mb-4 text-gray-800 font-semibold max-w-3xl mx-auto leading-relaxed"
+                className="text-xl md:text-2xl lg:text-3xl mb-4 text-white font-semibold max-w-3xl mx-auto leading-relaxed drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               >
                 Experience the future of healthcare management
               </motion.p>
@@ -283,20 +294,20 @@ const Home = () => {
                 transition={{ delay: 0.5 }}
               >
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-500 animate-pulse"></div>
-                  <span className="text-sm text-gray-700">Real-time Monitoring</span>
+                  <div className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></div>
+                  <span className="text-sm text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">Real-time Monitoring</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-pink-500 animate-pulse"></div>
-                  <span className="text-sm text-gray-700">AI-Powered Insights</span>
+                  <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+                  <span className="text-sm text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">AI-Powered Insights</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-fuchsia-500 animate-pulse"></div>
-                  <span className="text-sm text-gray-700">24/7 Support</span>
+                  <div className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></div>
+                  <span className="text-sm text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">24/7 Support</span>
                 </div>
               </motion.div>
               <motion.div
-                className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 text-rose-500 opacity-50"
+                className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 text-cyan-500 opacity-50"
                 animate={{ 
                   x: [0, 10, 0],
                   opacity: [0.5, 0.8, 0.5]
@@ -310,7 +321,7 @@ const Home = () => {
                 <FaHeartbeat className="w-full h-full" />
               </motion.div>
               <motion.div
-                className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 text-pink-500 opacity-50"
+                className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 text-blue-500 opacity-50"
                 animate={{ 
                   x: [0, -10, 0],
                   opacity: [0.5, 0.8, 0.5]
@@ -369,7 +380,7 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               variants={fadeIn}
             >
               {t.howItWorks.title}
@@ -378,16 +389,16 @@ const Home = () => {
               {t.howItWorks.steps.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-gray-800 shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                  className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-white shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                   whileHover={{ scale: 1.02, y: -5 }}
                   variants={fadeIn}
                 >
                   <div className="flex items-center mb-4">
-                    <div className="text-3xl font-bold text-rose-600 mr-3">{index + 1}</div>
-                    <FaHeartbeat className="h-8 w-8 text-rose-600 animate-pulse" />
+                    <div className="text-3xl font-bold text-cyan-300 mr-3">{index + 1}</div>
+                    <FaHeartbeat className="h-8 w-8 text-cyan-300 animate-pulse" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-gray-800">{item.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                  <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
+                  <p className="text-cyan-100 leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -404,7 +415,7 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               variants={fadeIn}
             >
               {t.benefits.title}
@@ -413,15 +424,15 @@ const Home = () => {
               {t.benefits.items.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-gray-800 shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                  className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-white shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                   whileHover={{ scale: 1.02, y: -5 }}
                   variants={fadeIn}
                 >
                   <div className="flex items-center mb-4">
-                    <MdHealthAndSafety className="h-8 w-8 text-rose-600 mr-3 animate-pulse" />
-                    <h3 className="text-xl font-bold text-gray-800">{item.title}</h3>
+                    <MdHealthAndSafety className="h-8 w-8 text-cyan-300 mr-3 animate-pulse" />
+                    <h3 className="text-xl font-bold text-white">{item.title}</h3>
                   </div>
-                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                  <p className="text-cyan-100 leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -438,7 +449,7 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               variants={fadeIn}
             >
               {t.whoCanBenefit.title}
@@ -447,15 +458,15 @@ const Home = () => {
               {t.whoCanBenefit.items.map((item: Group, index: number) => (
                 <motion.div
                   key={index}
-                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-gray-800 shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                  className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-white shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                   whileHover={{ scale: 1.02, y: -5 }}
                   variants={fadeIn}
                 >
                   <div className="flex items-center mb-4">
-                    <MdLocalHospital className="h-8 w-8 text-rose-600 mr-3 animate-pulse" />
-                    <h3 className="text-xl font-bold text-gray-800">{item.title}</h3>
+                    <MdLocalHospital className="h-8 w-8 text-cyan-300 mr-3 animate-pulse" />
+                    <h3 className="text-xl font-bold text-white">{item.title}</h3>
                   </div>
-                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+                  <p className="text-cyan-100 leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -472,43 +483,43 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               variants={fadeIn}
             >
               Our Impact in Numbers
             </motion.h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.05 }}
                 variants={fadeIn}
               >
-                <div className="text-4xl font-bold text-rose-600 mb-2">50K+</div>
-                <div className="text-gray-600">Patients Served</div>
+                <div className="text-4xl font-bold text-cyan-300 mb-2">50K+</div>
+                <div className="text-white">Patients Served</div>
               </motion.div>
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.05 }}
                 variants={fadeIn}
               >
-                <div className="text-4xl font-bold text-rose-600 mb-2">1000+</div>
-                <div className="text-gray-600">Healthcare Providers</div>
+                <div className="text-4xl font-bold text-cyan-300 mb-2">1000+</div>
+                <div className="text-white">Healthcare Providers</div>
               </motion.div>
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.05 }}
                 variants={fadeIn}
               >
-                <div className="text-4xl font-bold text-rose-600 mb-2">24/7</div>
-                <div className="text-gray-600">Support Available</div>
+                <div className="text-4xl font-bold text-cyan-300 mb-2">24/7</div>
+                <div className="text-white">Support Available</div>
               </motion.div>
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl text-center shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.05 }}
                 variants={fadeIn}
               >
-                <div className="text-4xl font-bold text-rose-600 mb-2">98%</div>
-                <div className="text-gray-600">Satisfaction Rate</div>
+                <div className="text-4xl font-bold text-cyan-300 mb-2">98%</div>
+                <div className="text-white">Satisfaction Rate</div>
               </motion.div>
             </div>
           </motion.div>
@@ -524,53 +535,53 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               variants={fadeIn}
             >
               What Our Users Say
             </motion.h2>
             <div className="grid md:grid-cols-3 gap-8">
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.02, y: -5 }}
                 variants={fadeIn}
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 font-bold text-xl">JD</div>
+                  <div className="w-12 h-12 bg-cyan-300/20 rounded-full flex items-center justify-center text-cyan-300 font-bold text-xl">JD</div>
                   <div className="ml-4">
-                    <div className="font-semibold text-gray-800">Dr. John Doe</div>
-                    <div className="text-sm text-gray-600">Cardiologist</div>
+                    <div className="font-semibold text-white">Dr. John Doe</div>
+                    <div className="text-sm text-cyan-200">Cardiologist</div>
                   </div>
                 </div>
-                <p className="text-gray-600 italic">"GrahmeenHealth has revolutionized how I connect with my patients. The platform is intuitive and efficient."</p>
+                <p className="text-cyan-100 italic">"GrahmeenHealth has revolutionized how I connect with my patients. The platform is intuitive and efficient."</p>
               </motion.div>
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.02, y: -5 }}
                 variants={fadeIn}
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 font-bold text-xl">SP</div>
+                  <div className="w-12 h-12 bg-cyan-300/20 rounded-full flex items-center justify-center text-cyan-300 font-bold text-xl">SP</div>
                   <div className="ml-4">
-                    <div className="font-semibold text-gray-800">Sarah Patel</div>
-                    <div className="text-sm text-gray-600">Patient</div>
+                    <div className="font-semibold text-white">Sarah Patel</div>
+                    <div className="text-sm text-cyan-200">Patient</div>
                   </div>
                 </div>
-                <p className="text-gray-600 italic">"Getting medical advice has never been easier. The 24/7 support is a game-changer for rural healthcare."</p>
+                <p className="text-cyan-100 italic">"Getting medical advice has never been easier. The 24/7 support is a game-changer for rural healthcare."</p>
               </motion.div>
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.02, y: -5 }}
                 variants={fadeIn}
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 font-bold text-xl">RK</div>
+                  <div className="w-12 h-12 bg-cyan-300/20 rounded-full flex items-center justify-center text-cyan-300 font-bold text-xl">RK</div>
                   <div className="ml-4">
-                    <div className="font-semibold text-gray-800">Rajesh Kumar</div>
-                    <div className="text-sm text-gray-600">Healthcare Provider</div>
+                    <div className="font-semibold text-white">Rajesh Kumar</div>
+                    <div className="text-sm text-cyan-200">Healthcare Provider</div>
                   </div>
                 </div>
-                <p className="text-gray-600 italic">"The AI-powered insights help us provide better care. It's like having a medical assistant at your fingertips."</p>
+                <p className="text-cyan-100 italic">"The AI-powered insights help us provide better care. It's like having a medical assistant at your fingertips."</p>
               </motion.div>
             </div>
           </motion.div>
@@ -586,47 +597,47 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800"
+              className="text-3xl md:text-4xl font-bold text-center mb-12 text-white drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)]"
               variants={fadeIn}
             >
               Latest Updates
             </motion.h2>
             <div className="grid md:grid-cols-2 gap-8">
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.02, y: -5 }}
                 variants={fadeIn}
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center text-rose-600">
+                  <div className="w-10 h-10 bg-cyan-300/20 rounded-full flex items-center justify-center text-cyan-300">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <div className="font-semibold text-gray-800">New AI Features</div>
-                    <div className="text-sm text-gray-600">2 days ago</div>
+                    <div className="font-semibold text-white">New AI Features</div>
+                    <div className="text-sm text-cyan-200">2 days ago</div>
                   </div>
                 </div>
-                <p className="text-gray-600">Enhanced AI diagnostics and predictive analytics now available for all healthcare providers.</p>
+                <p className="text-cyan-100">Enhanced AI diagnostics and predictive analytics now available for all healthcare providers.</p>
               </motion.div>
               <motion.div
-                className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
+                className="bg-white/10 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-white/20 hover:border-cyan-200/50 transition-all"
                 whileHover={{ scale: 1.02, y: -5 }}
                 variants={fadeIn}
               >
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center text-rose-600">
+                  <div className="w-10 h-10 bg-cyan-300/20 rounded-full flex items-center justify-center text-cyan-300">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
                   <div className="ml-4">
-                    <div className="font-semibold text-gray-800">Extended Support Hours</div>
-                    <div className="text-sm text-gray-600">1 week ago</div>
+                    <div className="font-semibold text-white">Extended Support Hours</div>
+                    <div className="text-sm text-cyan-200">1 week ago</div>
                   </div>
                 </div>
-                <p className="text-gray-600">Our support team is now available 24/7 to assist with any medical emergencies or queries.</p>
+                <p className="text-cyan-100">Our support team is now available 24/7 to assist with any medical emergencies or queries.</p>
               </motion.div>
             </div>
           </motion.div>
@@ -639,7 +650,7 @@ const Home = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <div className="container mx-auto text-center text-gray-600">
+          <div className="container mx-auto text-center text-cyan-200">
             <p>© 2024 GrahmeenHealth. All rights reserved.</p>
           </div>
         </motion.footer>
