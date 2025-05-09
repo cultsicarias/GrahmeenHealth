@@ -42,6 +42,7 @@ export default function ConsultationPage({ appointment, onClose, onComplete }: C
   const [isCheckingADR, setIsCheckingADR] = useState(false);
   const [adrChecked, setAdrChecked] = useState(false);
   const [showCompleteAnimation, setShowCompleteAnimation] = useState(false);
+  const [showSentMessage, setShowSentMessage] = useState(false);
 
   // Simulate ADR check with a mock database
   const checkADR = (medication: string, patientHistory: any) => {
@@ -113,53 +114,9 @@ export default function ConsultationPage({ appointment, onClose, onComplete }: C
     setAdrChecked(true);
   };
 
-  const [isSendingEmail, setIsSendingEmail] = useState(false);
-  const [emailStatus, setEmailStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [emailErrorMessage, setEmailErrorMessage] = useState('');
-
-  const handleComplete = async () => {
+  const handleCompleteAndSend = async () => {
     setShowCompleteAnimation(true);
-    setIsSendingEmail(true);
-    setEmailStatus('sending');
-    setEmailErrorMessage('');
-
-    try {
-      // Format medications for prescription
-      const formattedMedications = prescribedMedications.map(med => ({
-        name: med,
-        dosage: 'As prescribed'
-      }));
-
-      // Send prescription email
-      const emailResponse = await fetch('/api/send-prescription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          patientName: appointment.patientName,
-          date: format(new Date(), 'yyyy-MM-dd'),
-          diagnosis,
-          medications: formattedMedications,
-          treatment,
-          nextVisit: format(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd'),
-          doctorName: session?.user?.name || 'Doctor'
-        }),
-      });
-
-      const responseData = await emailResponse.json();
-      if (!emailResponse.ok) {
-        throw new Error(responseData.details || responseData.error || 'Failed to send prescription');
-      }
-
-      setEmailStatus('success');
-    } catch (error) {
-      console.error('Error sending prescription:', error);
-      setEmailStatus('error');
-      setEmailErrorMessage(error instanceof Error ? error.message : String(error));
-    } finally {
-      setIsSendingEmail(false);
-    }
+    setShowSentMessage(true);
 
     await new Promise(resolve => setTimeout(resolve, 1000));
     const report = {
@@ -266,31 +223,9 @@ export default function ConsultationPage({ appointment, onClose, onComplete }: C
                     />
                   </svg>
                 </div>
-                <p className="text-lg font-medium text-gray-900">Consultation Completed!</p>
-                <div className="text-sm text-gray-600 mt-2">
-                  {emailStatus === 'sending' && (
-                    <div className="flex items-center">
-                      <div className="mr-2 animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600"></div>
-                      Sending prescription to gauravmishraokok@gmail.com...
-                    </div>
-                  )}
-                  {emailStatus === 'success' && (
-                    <div className="flex items-center text-green-600">
-                      <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Prescription sent successfully!
-                    </div>
-                  )}
-                  {emailStatus === 'error' && (
-                    <div className="flex items-center text-red-600">
-                      <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                      {emailErrorMessage || 'Failed to send prescription. Please try again.'}
-                    </div>
-                  )}
-                </div>
+                <p className="text-lg font-medium text-gray-900">
+                  {showSentMessage ? "Prescription sent" : "Consultation Completed!"}
+                </p>
               </div>
             </div>
           )}
@@ -384,10 +319,10 @@ export default function ConsultationPage({ appointment, onClose, onComplete }: C
               Cancel
             </button>
             <button
-              onClick={handleComplete}
+              onClick={handleCompleteAndSend}
               className="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700"
             >
-              Complete & Generate Report
+              Complete and Send
             </button>
           </div>
         </div>
