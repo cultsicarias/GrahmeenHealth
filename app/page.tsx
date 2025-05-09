@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { translations } from './utils/translations';
+import HospitalMap from './components/HospitalMap';
 import { FaUserMd, FaUserInjured, FaHeartbeat, FaAmbulance, FaHospital, FaStethoscope } from 'react-icons/fa';
 import { MdHealthAndSafety, MdLocalHospital, MdEmergency } from 'react-icons/md';
 
@@ -30,7 +31,7 @@ interface Group {
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
+  transition: { duration: 0.6 }
 };
 
 const staggerContainer = {
@@ -43,119 +44,60 @@ const staggerContainer = {
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState('en');
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [showMap, setShowMap] = useState(false);
   const [showEmergencyModal, setShowEmergencyModal] = useState(false);
-  const t = translations[language];
+  const [isCalling, setIsCalling] = useState(false);
+  const [callType, setCallType] = useState<'emergency' | 'ambulance' | null>(null);
+  const [callStatus, setCallStatus] = useState<string>('');
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleLanguage = () => {
-    setLanguage(prev => {
-      switch(prev) {
-        case 'en': return 'hi';
-        case 'hi': return 'kn';
-        default: return 'en';
-      }
-    });
+    setIsTranslating(true);
+    const newLang = language === 'en' ? 'hi' : language === 'hi' ? 'kn' : 'en';
+    setLanguage(newLang);
+    setIsTranslating(false);
   };
 
-  const handleEmergencyClick = () => {
-    setShowEmergencyModal(true);
-    // Auto-hide modal after 5 seconds
-    setTimeout(() => setShowEmergencyModal(false), 5000);
+  const t = translations[language as keyof typeof translations];
+
+  const handleCloseMap = () => {
+    setShowMap(false);
+  };
+
+  const handleEmergencyCall = (type: 'emergency' | 'ambulance') => {
+    if (window.confirm(`Are you sure you want to call ${type === 'emergency' ? 'Emergency Services (108)' : 'Ambulance Services (102)'}?`)) {
+      setIsCalling(true);
+      setCallType(type);
+      setCallStatus('Connecting...');
+      
+      // Simulate call connection
+      setTimeout(() => {
+        setCallStatus('Connected');
+        // Here you would typically integrate with a real calling service
+        // For now, we'll just simulate the call
+        const number = type === 'emergency' ? '108' : '102';
+        window.location.href = `tel:${number}`;
+      }, 1500);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 via-purple-400 to-pink-400 relative overflow-hidden">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 relative overflow-hidden">
+      {showMap && <HospitalMap onClose={handleCloseMap} />}
+      
+      {/* Simple Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-red-400 via-yellow-400 via-green-400 via-blue-400 via-purple-400 to-pink-400"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),rgba(255,255,255,0))]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,rgba(255,255,255,0.2),rgba(255,255,255,0))]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(255,255,255,0.2),rgba(255,255,255,0))]"></div>
-      </div>
-
-      {/* Animated Floating Elements */}
-      <div className="fixed inset-0 z-0 overflow-hidden">
-        <motion.div
-          className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-red-400/30 via-yellow-400/30 to-green-400/30 blur-3xl"
-          animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          style={{
-            top: '10%',
-            left: '10%',
-          }}
-        />
-        <motion.div
-          className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-green-400/30 via-blue-400/30 to-purple-400/30 blur-3xl"
-          animate={{
-            x: [0, -100, 0],
-            y: [0, -50, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          style={{
-            top: '60%',
-            right: '10%',
-          }}
-        />
-        <motion.div
-          className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-r from-purple-400/30 via-pink-400/30 to-red-400/30 blur-3xl"
-          animate={{
-            x: [0, 50, 0],
-            y: [0, 100, 0],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          style={{
-            bottom: '10%',
-            left: '30%',
-          }}
-        />
-      </div>
-
-      {/* Animated Heartline Background */}
-      <div className="fixed inset-0 z-0 overflow-hidden">
-        <svg
-          className="absolute inset-0 w-full h-full opacity-30"
-          preserveAspectRatio="none"
-          viewBox="0 0 100 100"
-        >
-          <path
-            className="animate-heartline"
-            d="M0,50 Q10,40 20,50 T40,50 T60,50 T80,50 T100,50"
-            fill="none"
-            stroke="rgba(255,255,255,0.5)"
-            strokeWidth="1"
-          />
-          <path
-            className="animate-heartline-delayed"
-            d="M0,50 Q10,40 20,50 T40,50 T60,50 T80,50 T100,50"
-            fill="none"
-            stroke="rgba(255,255,255,0.3)"
-            strokeWidth="1"
-          />
-        </svg>
-        <div className="absolute inset-0 bg-gradient-to-br from-red-400/90 via-yellow-400/90 via-green-400/90 via-blue-400/90 via-purple-400/90 to-pink-400/90 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500"></div>
       </div>
 
       {/* SOS Button */}
@@ -166,7 +108,7 @@ const Home = () => {
         className="fixed bottom-8 right-8 z-50"
       >
         <button
-          onClick={handleEmergencyClick}
+          onClick={() => setShowEmergencyModal(true)}
           className="group relative flex items-center justify-center w-16 h-16 bg-red-600 rounded-full shadow-lg hover:shadow-red-500/50 transition-all duration-300 hover:scale-110"
         >
           <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-75"></div>
@@ -193,28 +135,48 @@ const Home = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Emergency Contact</h3>
                 <p className="text-gray-600 mb-4">Please contact emergency services immediately</p>
+                {isCalling && (
+                  <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+                      <span className="text-blue-600 font-medium">{callStatus}</span>
+                    </div>
+                    {callType && (
+                      <p className="text-sm text-blue-600 mt-2">
+                        Calling {callType === 'emergency' ? 'Emergency Services (108)' : 'Ambulance Services (102)'}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="space-y-4">
-                <a
-                  href="tel:108"
-                  className="flex items-center justify-center w-full px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                <button
+                  onClick={() => handleEmergencyCall('emergency')}
+                  disabled={isCalling}
+                  className="flex items-center justify-center w-full px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   Call Emergency (108)
-                </a>
-                <a
-                  href="tel:102"
-                  className="flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                </button>
+                <button
+                  onClick={() => handleEmergencyCall('ambulance')}
+                  disabled={isCalling}
+                  className="flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   Call Ambulance (102)
-                </a>
+                </button>
                 <button
-                  onClick={() => setShowEmergencyModal(false)}
+                  onClick={() => {
+                    setShowEmergencyModal(false);
+                    setIsCalling(false);
+                    setCallType(null);
+                    setCallStatus('');
+                  }}
                   className="flex items-center justify-center w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                 >
                   Close
@@ -226,22 +188,9 @@ const Home = () => {
       </AnimatePresence>
 
       <div className="relative z-10">
-        {/* Background Image */}
-        <div className="fixed inset-0 z-0">
-          <Image
-            src="https://scitechdaily.com/images/Electrocardiogram-ECG.gif"
-            alt="ECG Background"
-            fill
-            className="object-cover scale-150 opacity-20"
-            priority
-            quality={100}
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/90 via-teal-900/90 to-cyan-900/90 backdrop-blur-sm"></div>
-        </div>
-
         {/* Header */}
         <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-white/90 shadow-lg py-3 backdrop-blur-md' : 'bg-white/75 py-6 backdrop-blur-sm'
+          scrolled ? 'bg-[#6085FF]/90 shadow-md py-3' : 'bg-[#6085FF]/75 py-6'
         }`}>
           <div className="container mx-auto px-4 flex justify-between items-center">
             <div className="flex items-center">
@@ -249,17 +198,33 @@ const Home = () => {
                 GrahmeenHealth
               </span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mr-2">
               <button
                 onClick={toggleLanguage}
-                className="px-4 py-2 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 transition-colors text-sm font-medium"
+                disabled={isTranslating}
+                className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20 flex items-center gap-2 disabled:opacity-50"
               >
-                {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
+                {isTranslating ? (
+                  <span className="animate-spin">⟳</span>
+                ) : (
+                  <>
+                    {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </>
+                )}
               </button>
-              <Link
-                href="/login"
-                className="px-6 py-2 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 transition-colors text-sm font-medium"
+              <button
+                onClick={() => setShowMap(true)}
+                className="text-lg font-semibold bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all shadow-lg hover:shadow-green-500/30 flex items-center gap-2"
               >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                </svg>
+                Find Hospitals
+              </button>
+              <Link href="/login" className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20">
                 Login
               </Link>
               <Link
@@ -362,10 +327,7 @@ const Home = () => {
             </motion.div>
             
             {/* Doctor/Patient Options */}
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-              variants={staggerContainer}
-            >
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -393,12 +355,12 @@ const Home = () => {
                   {t.hero.patientButton}
                 </Link>
               </motion.div>
-            </motion.div>
+            </div>
           </motion.div>
         </section>
 
         {/* How it Works Section */}
-        <section className="py-20 px-4 relative">
+        <section className="py-20 px-4 relative bg-white/10">
           <motion.div 
             className="container mx-auto max-w-6xl"
             initial="initial"
@@ -413,7 +375,7 @@ const Home = () => {
               {t.howItWorks.title}
             </motion.h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {t.howItWorks.steps.map((step: Step, index: number) => (
+              {t.howItWorks.steps.map((item, index) => (
                 <motion.div
                   key={index}
                   className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-gray-800 shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
@@ -424,8 +386,8 @@ const Home = () => {
                     <div className="text-3xl font-bold text-rose-600 mr-3">{index + 1}</div>
                     <FaHeartbeat className="h-8 w-8 text-rose-600 animate-pulse" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2 text-gray-800">{step.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{step.desc}</p>
+                  <h3 className="text-xl font-bold mb-2 text-gray-800">{item.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -448,7 +410,7 @@ const Home = () => {
               {t.benefits.title}
             </motion.h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {t.benefits.items.map((item: Benefit, index: number) => (
+              {t.benefits.items.map((item, index) => (
                 <motion.div
                   key={index}
                   className="bg-white/80 backdrop-blur-sm p-6 rounded-xl text-gray-800 shadow-lg border border-gray-100 hover:border-rose-100 transition-all"
@@ -467,7 +429,7 @@ const Home = () => {
         </section>
 
         {/* For Whom Section */}
-        <section className="py-20 px-4 relative">
+        <section className="py-20 px-4 relative bg-white/10">
           <motion.div 
             className="container mx-auto max-w-6xl"
             initial="initial"
