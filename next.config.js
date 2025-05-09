@@ -6,6 +6,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'i.imgflip.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'imgflip.com',
         pathname: '/gif/**',
       },
