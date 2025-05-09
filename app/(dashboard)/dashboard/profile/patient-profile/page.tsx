@@ -9,6 +9,7 @@ import {
   FiThermometer, FiHeart, FiList, FiClock, FiCheckCircle, 
   FiXCircle, FiTrendingUp
 } from 'react-icons/fi';
+import PatientQRCode from '@/app/components/PatientQRCode';
 
 interface MedicalCondition {
   name: string;
@@ -273,6 +274,9 @@ export default function PatientProfilePage() {
                     <p className="text-sm text-gray-500">Gender</p>
                     <p className="font-medium text-gray-800">{patient.gender ? patient.gender.charAt(0).toUpperCase() + patient.gender.slice(1) : 'Not specified'}</p>
                   </div>
+                </div>
+                <div className="mt-6">
+                  <PatientQRCode />
                 </div>
               </div>
               
