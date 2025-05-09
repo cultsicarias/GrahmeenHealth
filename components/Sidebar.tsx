@@ -52,7 +52,7 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
         <div className="flex-1 flex flex-col overflow-y-auto">
           <div className="flex items-center justify-center h-16 px-4 bg-blue-600">
             <Link href="/dashboard" className="text-white font-bold text-xl">
-              VaidyaCare
+              GrahmeenHealth
             </Link>
           </div>
 

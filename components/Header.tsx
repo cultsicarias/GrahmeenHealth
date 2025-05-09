@@ -43,7 +43,7 @@ export default function Header({ setIsOpen }: HeaderProps) {
       <div className="flex-1 flex justify-between px-4">
         <div className="flex-1 flex items-center justify-center">
           <span className="text-lg font-semibold text-gray-900">
-            VaidyaCare
+            GrahmeenHealth
           </span>
         </div>
         <div className="ml-4 flex items-center md:ml-6">

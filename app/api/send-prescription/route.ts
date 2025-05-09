@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #2563eb; margin: 0;">VaidyaCare Medical Prescription</h1>
+          <h1 style="color: #2563eb; margin: 0;">GrahmeenHealth Medical Prescription</h1>
           <p style="color: #666; margin-top: 5px;">Date: ${data.date}</p>
         </div>
         
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
         <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
           <p style="margin: 5px 0; text-align: right;">
             <strong>Dr. ${data.doctorName}</strong><br>
-            <span style="color: #666;">VaidyaCare Medical Center</span>
+            <span style="color: #666;">GrahmeenHealth Medical Center</span>
           </p>
         </div>
       </div>
