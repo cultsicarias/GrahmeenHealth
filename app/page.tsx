@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { translations } from './utils/translations';
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -12,6 +13,8 @@ const fadeIn = {
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [language, setLanguage] = useState('en');
+  const [isTranslating, setIsTranslating] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,6 +24,14 @@ const Home = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const toggleLanguage = () => {
+    setIsTranslating(true);
+    setLanguage(prev => prev === 'en' ? 'hi' : 'en');
+    setIsTranslating(false);
+  };
+
+  const t = translations[language as keyof typeof translations];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -44,15 +55,31 @@ const Home = () => {
         }`}>
           <div className="container mx-auto px-4 flex justify-between items-center">
             <div className="flex items-center">
-              <span className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
-                VaidyaCare
+              <span className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-200 via-cyan-100 to-white bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] hover:from-cyan-100 hover:via-white hover:to-cyan-50 transition-all duration-300 [text-shadow:_0_0_10px_rgba(165,243,252,0.6),_0_0_20px_rgba(165,243,252,0.4),_0_0_30px_rgba(165,243,252,0.3)] hover:[text-shadow:_0_0_15px_rgba(165,243,252,0.7),_0_0_25px_rgba(165,243,252,0.5),_0_0_35px_rgba(165,243,252,0.4)]">
+                GrahmeenHealth
               </span>
             </div>
-            <div className="flex items-center space-x-4">
-              <Link href="/login" className="text-cyan-200 hover:text-white transition-colors">
+            <div className="flex items-center space-x-4 mr-2">
+              <button
+                onClick={toggleLanguage}
+                disabled={isTranslating}
+                className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20 flex items-center gap-2 disabled:opacity-50"
+              >
+                {isTranslating ? (
+                  <span className="animate-spin">⟳</span>
+                ) : (
+                  <>
+                    {language === 'en' ? 'हिंदी' : 'English'}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </>
+                )}
+              </button>
+              <Link href="/login" className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20">
                 Login
               </Link>
-              <Link href="/register" className="bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-cyan-500 hover:to-blue-600 transition-all">
+              <Link href="/register" className="text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-cyan-500/30">
                 Register
               </Link>
             </div>
@@ -79,10 +106,10 @@ const Home = () => {
               </div>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 text-transparent bg-clip-text">
-              Your Health, Our Priority
+              {t.hero.title}
             </h1>
             <p className="text-xl md:text-2xl mb-12 text-blue-100">
-              Experience the future of healthcare management
+              {t.hero.subtitle}
             </p>
             
             {/* Doctor/Patient Options */}
@@ -93,12 +120,12 @@ const Home = () => {
               >
                 <Link 
                   href="/register?role=doctor"
-                  className="group flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-cyan-500/30 transition-all"
+                  className="group flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-cyan-500/30 transition-all text-xl font-semibold"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  I am a Doctor
+                  {t.hero.doctorButton}
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
                 </Link>
               </motion.div>
@@ -109,12 +136,12 @@ const Home = () => {
               >
                 <Link 
                   href="/register?role=patient"
-                  className="group flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all"
+                  className="group flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all text-xl font-semibold"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                   </svg>
-                  I am a Patient
+                  {t.hero.patientButton}
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-400 to-pink-400 opacity-0 group-hover:opacity-100 transition-opacity -z-10"></div>
                 </Link>
               </motion.div>
@@ -131,25 +158,9 @@ const Home = () => {
             variants={fadeIn}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-center mb-12 text-white">How It Works</h2>
+            <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.howItWorks.title}</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Create Account",
-                  desc: "Sign up and complete your medical profile",
-                  icon: "🏥"
-                },
-                {
-                  title: "Connect with Doctors",
-                  desc: "Find and consult with qualified healthcare professionals",
-                  icon: "👨‍⚕️"
-                },
-                {
-                  title: "Manage Health",
-                  desc: "Track records, appointments, and medications",
-                  icon: "📊"
-                }
-              ].map((item, index) => (
+              {t.howItWorks.steps.map((item, index) => (
                 <motion.div
                   key={index}
                   className="bg-white/20 p-6 rounded-xl text-white hover:bg-white/30 transition-all"
@@ -173,26 +184,9 @@ const Home = () => {
             variants={fadeIn}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-center mb-12 text-white">Benefits</h2>
+            <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.benefits.title}</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: "24/7 Access",
-                  desc: "Access your medical records anytime, anywhere"
-                },
-                {
-                  title: "Secure Platform",
-                  desc: "Your data is protected with enterprise-grade security"
-                },
-                {
-                  title: "Easy Communication",
-                  desc: "Direct messaging and video calls with healthcare providers"
-                },
-                {
-                  title: "Smart Analytics",
-                  desc: "AI-powered health insights and recommendations"
-                }
-              ].map((item, index) => (
+              {t.benefits.items.map((item, index) => (
                 <motion.div
                   key={index}
                   className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
@@ -215,25 +209,9 @@ const Home = () => {
             variants={fadeIn}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-center mb-12">Who Can Benefit?</h2>
+            <h2 className="text-4xl font-bold text-center mb-12">{t.whoCanBenefit.title}</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {[
-                {
-                  title: "Patients",
-                  desc: "Manage your health journey with ease",
-                  icon: "🧑"
-                },
-                {
-                  title: "Healthcare Providers",
-                  desc: "Streamline patient care and management",
-                  icon: "👨‍⚕️"
-                },
-                {
-                  title: "Healthcare Institutions",
-                  desc: "Improve operational efficiency",
-                  icon: "🏥"
-                }
-              ].map((item, index) => (
+              {t.whoCanBenefit.items.map((item, index) => (
                 <motion.div
                   key={index}
                   className="text-center"
@@ -253,13 +231,13 @@ const Home = () => {
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-4 gap-8">
               <div>
-                <h3 className="text-xl font-bold mb-4">VaidyaCare</h3>
+                <h3 className="text-xl font-bold mb-4">GrahmeenHealth</h3>
                 <p className="text-blue-200">Developed by Team Access Denied</p>
                 <p className="text-blue-200">Licensed under Healthcare Standards</p>
               </div>
               <div>
                 <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-                <p className="text-blue-200">Email: support@vaidyacare.com</p>
+                <p className="text-blue-200">Email: support@grahmeenhealth.com</p>
                 <p className="text-blue-200">Phone: +1 (555) 123-4567</p>
               </div>
               <div>
@@ -280,7 +258,7 @@ const Home = () => {
               </div>
             </div>
             <div className="mt-8 pt-8 border-t border-blue-800/50 text-center">
-              <p className="text-blue-200"> 2024 VaidyaCare. All rights reserved.</p>
+              <p className="text-blue-200">© 2024 GrahmeenHealth. All rights reserved.</p>
             </div>
           </div>
         </footer>

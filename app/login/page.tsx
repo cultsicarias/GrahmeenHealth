@@ -97,7 +97,7 @@ export default function Login() {
 
         <div className="text-center">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent mb-2">
-            VaidyaCare
+            GrahmeenHealth
           </h1>
           <h2 className="mt-6 text-2xl font-bold text-white">
             Welcome Back!
