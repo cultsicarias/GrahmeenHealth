@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 
+
 export interface HardcodedDoctor {
   _id: string;
   name: string;
