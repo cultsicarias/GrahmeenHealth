@@ -56,7 +56,7 @@ const patientSchema = new Schema<PatientDocument>(
     allergies: [{ type: String }],
     medicalConditions: [
       {
-        name: { type: String, required: true },
+        name: { type: String },
         diagnosedDate: { type: Date },
         severity: { 
           type: String, 
@@ -67,9 +67,9 @@ const patientSchema = new Schema<PatientDocument>(
     ],
     medications: [
       {
-        name: { type: String, required: true },
-        dosage: { type: String, required: true },
-        frequency: { type: String, required: true },
+        name: { type: String },
+        dosage: { type: String },
+        frequency: { type: String },
         startDate: { type: Date },
         endDate: { type: Date }
       }

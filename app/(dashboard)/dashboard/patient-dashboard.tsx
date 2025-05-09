@@ -3,11 +3,25 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import MedicalChatbot from '@/app/components/MedicalChatbot';
+
+interface Appointment {
+  date: string;
+  time: string;
+  doctorName: string;
+  purpose: string;
+}
+
+interface Medication {
+  name: string;
+  dosage: string;
+  frequency: string;
+}
 
 export default function PatientDashboard() {
   const { data: session } = useSession();
-  const [nextAppointment, setNextAppointment] = useState(null);
-  const [medications, setMedications] = useState([]);
+  const [nextAppointment, setNextAppointment] = useState<Appointment | null>(null);
+  const [medications, setMedications] = useState<Medication[]>([]);
 
   useEffect(() => {
     // Fetch patient data
@@ -102,6 +116,9 @@ export default function PatientDashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Medical Chatbot */}
+      <MedicalChatbot />
     </div>
   );
 } 

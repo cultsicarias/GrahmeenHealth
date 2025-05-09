@@ -21,7 +21,7 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.1",
     "date-fns": "^4.1.0",
-    "framer-motion": "^12.6.5",
+    "framer-motion": "^12.10.5",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.3",

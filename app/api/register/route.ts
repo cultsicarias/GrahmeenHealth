@@ -116,7 +116,8 @@ export async function POST(req: NextRequest) {
         languages: randomDoctorData.languages,
         isAvailable: randomDoctorData.isAvailable
       });
-    } else if (role === 'patient') {
+    } else {
+      // Create patient profile
       profileData = await Patient.create({
         userId: user._id,
         phone,
@@ -125,10 +126,10 @@ export async function POST(req: NextRequest) {
         bloodGroup,
         height,
         weight,
-        allergies: Array.isArray(allergies) ? allergies : (allergies ? [allergies] : []),
-        medicalConditions: Array.isArray(medicalConditions) ? medicalConditions : [],
-        medications: Array.isArray(medications) ? medications : [],
-        emergencyContact
+        allergies: Array.isArray(allergies) ? allergies.filter(a => a) : [],
+        medicalConditions: Array.isArray(medicalConditions) ? medicalConditions.filter(m => m.name) : [],
+        medications: Array.isArray(medications) ? medications.filter(m => m.name && m.dosage && m.frequency) : [],
+        emergencyContact: emergencyContact?.name ? emergencyContact : undefined
       });
     }
 
