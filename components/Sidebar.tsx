@@ -2,7 +2,7 @@
 
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
 interface SidebarProps {
@@ -14,6 +14,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const router = useRouter();
 
   const doctorNavLinks = [
     { name: 'Dashboard', href: '/dashboard', icon: 'grid' },
@@ -32,6 +33,20 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
   ];
 
   const navLinks = userRole === 'doctor' ? doctorNavLinks : patientNavLinks;
+
+  const handleLogout = async () => {
+    try {
+      await signOut({ 
+        redirect: false,
+        callbackUrl: '/'
+      });
+      router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Force redirect to home page even if there's an error
+      router.push('/');
+    }
+  };
 
   return (
     <>
@@ -92,7 +107,7 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
         {/* User info and Logout */}
         <div className="flex-shrink-0 flex flex-col border-t border-gray-200 p-4 space-y-4">
           <button
-            onClick={() => signOut()}
+            onClick={handleLogout}
             className="flex items-center px-2 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-md"
           >
             <svg

@@ -86,6 +86,24 @@ body {
   }
 }
 
+@keyframes heartline {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes heartline-delayed {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 .animate-fadeIn {
   animation: fadeIn 0.6s ease-out forwards;
 }
@@ -137,4 +155,13 @@ body {
 
 .hover\:bg-blue-50 {
   transition: background-color 0.3s ease;
+}
+
+.animate-heartline {
+  animation: heartline 3s linear infinite;
+}
+
+.animate-heartline-delayed {
+  animation: heartline-delayed 3s linear infinite;
+  animation-delay: 1.5s;
 }
