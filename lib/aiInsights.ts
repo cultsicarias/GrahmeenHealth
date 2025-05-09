@@ -4,6 +4,7 @@ interface Symptom {
   duration: string;
 }
 
+
 interface AIInsights {
   predictedDiseases: Array<{ name: string; probability: number }>;
   possibleADRs: Array<{ drug: string; reaction: string; severity: string }>;

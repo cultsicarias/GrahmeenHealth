@@ -1,7 +1,7 @@
 import { Medication } from '../models/User';
 import { Symptom } from '../models/Appointment';
 
-// Sample drug interaction database
+// Sample drug interaction databasee
 // In a real application, this would come from a medical API or database
 const drugInteractions: Record<string, string[]> = {
   'aspirin': ['warfarin', 'heparin', 'clopidogrel', 'ibuprofen', 'naproxen'],

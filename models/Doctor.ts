@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { UserDocument } from './User';
 
+
 export interface DoctorDocument extends mongoose.Document {
   userId: UserDocument['_id'];
   specialization: string;

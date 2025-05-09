@@ -6,6 +6,7 @@ interface Symptom {
   duration: string;
 }
 
+
 interface AdditionalInfo {
   allergies?: string;
   currentMedications?: string;

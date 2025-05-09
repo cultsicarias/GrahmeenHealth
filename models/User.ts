@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 
+
 export interface UserDocument extends mongoose.Document {
   email: string;
   password: string;

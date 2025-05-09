@@ -1,5 +1,5 @@
 /**
- * This file contains predefined data for auto-populating doctor profiles during registration
+ * This file contains predefined data for auto-populating doctor profiles during registration 
  */
 
 // Top Indian medical colleges
