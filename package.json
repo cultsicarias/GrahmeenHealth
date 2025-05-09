@@ -35,7 +35,7 @@
     "react-hook-form": "^7.50.1",
     "react-hot-toast": "^2.5.2",
     "react-icons": "^4.11.0",
-    "react-leaflet": "^5.0.0",
+    "react-leaflet": "^4.2.1",
     "resend": "^4.2.0",
     "zod": "^3.22.4"
   },
