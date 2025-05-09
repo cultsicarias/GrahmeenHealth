@@ -390,38 +390,40 @@ export default function Register() {
                   <label className="block text-sm font-medium text-gray-700 mb-4">
                     I am a
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-6">
                     <button
                       type="button"
                       onClick={() => setBasicInfo(prev => ({ ...prev, role: 'patient' }))}
-                      className={`relative p-4 border rounded-lg transition-all duration-200 ${
+                      className={`relative p-6 border-2 rounded-xl transition-all duration-300 transform hover:scale-105 ${
                         basicInfo.role === 'patient'
-                          ? 'border-blue-500 bg-blue-50 shadow-md'
-                          : 'border-gray-300 hover:border-blue-300 hover:bg-gray-50'
+                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 shadow-lg'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
                       }`}
                     >
                       <div className="flex flex-col items-center text-center">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
                           basicInfo.role === 'patient'
-                            ? 'bg-blue-100 text-blue-600'
+                            ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-md'
                             : 'bg-gray-100 text-gray-600'
                         }`}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                           </svg>
                         </div>
-                        <span className={`font-medium ${
+                        <span className={`text-lg font-semibold mb-1 ${
                           basicInfo.role === 'patient'
                             ? 'text-blue-600'
                             : 'text-gray-700'
                         }`}>Patient</span>
-                        <span className="text-xs text-gray-500 mt-1">Looking for medical care</span>
+                        <span className="text-sm text-gray-500">Looking for medical care</span>
                       </div>
                       {basicInfo.role === 'patient' && (
-                        <div className="absolute top-2 right-2">
-                          <svg className="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
+                        <div className="absolute top-3 right-3">
+                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
+                            <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </div>
                         </div>
                       )}
                     </button>
@@ -429,34 +431,36 @@ export default function Register() {
                     <button
                       type="button"
                       onClick={() => setBasicInfo(prev => ({ ...prev, role: 'doctor' }))}
-                      className={`relative p-4 border rounded-lg transition-all duration-200 ${
+                      className={`relative p-6 border-2 rounded-xl transition-all duration-300 transform hover:scale-105 ${
                         basicInfo.role === 'doctor'
-                          ? 'border-blue-500 bg-blue-50 shadow-md'
-                          : 'border-gray-300 hover:border-blue-300 hover:bg-gray-50'
+                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 shadow-lg'
+                          : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
                       }`}
                     >
                       <div className="flex flex-col items-center text-center">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
                           basicInfo.role === 'doctor'
-                            ? 'bg-blue-100 text-blue-600'
+                            ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-md'
                             : 'bg-gray-100 text-gray-600'
                         }`}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </div>
-                        <span className={`font-medium ${
+                        <span className={`text-lg font-semibold mb-1 ${
                           basicInfo.role === 'doctor'
                             ? 'text-blue-600'
                             : 'text-gray-700'
                         }`}>Doctor</span>
-                        <span className="text-xs text-gray-500 mt-1">Providing medical care</span>
+                        <span className="text-sm text-gray-500">Providing medical care</span>
                       </div>
                       {basicInfo.role === 'doctor' && (
-                        <div className="absolute top-2 right-2">
-                          <svg className="h-5 w-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                          </svg>
+                        <div className="absolute top-3 right-3">
+                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
+                            <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </div>
                         </div>
                       )}
                     </button>
