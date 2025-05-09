@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import 'leaflet/dist/leaflet.css';
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"],
