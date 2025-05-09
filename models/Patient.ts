@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { UserDocument } from './User';
 
+
 export interface MedicalCondition {
   name: string;
   diagnosedDate?: Date;
