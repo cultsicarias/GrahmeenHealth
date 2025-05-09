@@ -7,6 +7,7 @@ import Doctor from "@/models/Doctor";
 import Patient from "@/models/Patient";
 import { hardcodedDoctors, getDoctorById } from "@/lib/hardcodedDoctors";
 
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
