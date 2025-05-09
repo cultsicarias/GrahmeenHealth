@@ -3,70 +3,39 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { translations } from './utils/translations';
 import HospitalMap from './components/HospitalMap';
-
-type Language = 'en' | 'hi' | 'kn';
-
-interface Step {
-  title: string;
-  desc: string;
-  icon: string;
-}
-
-interface Benefit {
-  title: string;
-  desc: string;
-}
-
-interface Group {
-  title: string;
-  desc: string;
-  icon: string;
-}
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
+  transition: { duration: 0.6 }
 };
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
-<<<<<<< HEAD
   const [language, setLanguage] = useState('en');
   const [isTranslating, setIsTranslating] = useState(false);
   const [showMap, setShowMap] = useState(false);
-=======
-  const [language, setLanguage] = useState<Language>('en');
-  const [showEmergencyModal, setShowEmergencyModal] = useState(false);
-  const t = translations[language];
->>>>>>> 519bb0680142eadb3eda93ee3c1f1715fb4f039f
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleLanguage = () => {
-    setLanguage(prev => {
-      switch(prev) {
-        case 'en': return 'hi';
-        case 'hi': return 'kn';
-        default: return 'en';
-      }
-    });
+    setIsTranslating(true);
+    const newLang = language === 'en' ? 'hi' : language === 'hi' ? 'kn' : 'en';
+    setLanguage(newLang);
+    setIsTranslating(false);
   };
 
-  const handleEmergencyClick = () => {
-    setShowEmergencyModal(true);
-    // Auto-hide modal after 5 seconds
-    setTimeout(() => setShowEmergencyModal(false), 5000);
-  };
+  const t = translations[language as keyof typeof translations];
 
   const handleCloseMap = () => {
     setShowMap(false);
@@ -74,77 +43,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-<<<<<<< HEAD
       {showMap && <HospitalMap onClose={handleCloseMap} />}
-=======
-      {/* SOS Button */}
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="fixed bottom-8 right-8 z-50"
-      >
-        <button
-          onClick={handleEmergencyClick}
-          className="group relative flex items-center justify-center w-16 h-16 bg-red-600 rounded-full shadow-lg hover:shadow-red-500/50 transition-all duration-300 hover:scale-110"
-        >
-          <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-75"></div>
-          <span className="text-white text-xl font-bold">SOS</span>
-          <div className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
-        </button>
-      </motion.div>
-
-      {/* Emergency Modal */}
-      <AnimatePresence>
-        {showEmergencyModal && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-          >
-            <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Emergency Contact</h3>
-                <p className="text-gray-600 mb-4">Please contact emergency services immediately</p>
-              </div>
-              <div className="space-y-4">
-                <a
-                  href="tel:108"
-                  className="flex items-center justify-center w-full px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  Call Emergency (108)
-                </a>
-                <a
-                  href="tel:102"
-                  className="flex items-center justify-center w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  Call Ambulance (102)
-                </a>
-                <button
-                  onClick={() => setShowEmergencyModal(false)}
-                  className="flex items-center justify-center w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
->>>>>>> 519bb0680142eadb3eda93ee3c1f1715fb4f039f
       <div className="relative z-10">
         {/* Background Image */}
         <div className="fixed inset-0 z-0">
@@ -169,14 +68,23 @@ const Home = () => {
                 GrahmeenHealth
               </span>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mr-2">
               <button
                 onClick={toggleLanguage}
-                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+                disabled={isTranslating}
+                className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20 flex items-center gap-2 disabled:opacity-50"
               >
-                {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
+                {isTranslating ? (
+                  <span className="animate-spin">⟳</span>
+                ) : (
+                  <>
+                    {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </>
+                )}
               </button>
-<<<<<<< HEAD
               <button
                 onClick={() => setShowMap(true)}
                 className="text-lg font-semibold bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-3 rounded-lg hover:from-green-500 hover:to-emerald-600 transition-all shadow-lg hover:shadow-green-500/30 flex items-center gap-2"
@@ -187,18 +95,9 @@ const Home = () => {
                 Find Hospitals
               </button>
               <Link href="/login" className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20">
-=======
-              <Link
-                href="/login"
-                className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
-              >
->>>>>>> 519bb0680142eadb3eda93ee3c1f1715fb4f039f
                 Login
               </Link>
-              <Link
-                href="/register"
-                className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-white hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-cyan-500/30"
-              >
+              <Link href="/register" className="text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-cyan-500/30">
                 Register
               </Link>
             </div>
@@ -232,7 +131,7 @@ const Home = () => {
             </p>
             
             {/* Doctor/Patient Options */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="w-full sm:w-auto"
@@ -269,7 +168,7 @@ const Home = () => {
         </section>
 
         {/* How it Works Section */}
-        <section className="py-20 px-4 relative">
+        <section className="py-20 px-4 relative bg-white/10">
           <motion.div 
             className="container mx-auto"
             initial="initial"
@@ -279,15 +178,15 @@ const Home = () => {
           >
             <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.howItWorks.title}</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {t.howItWorks.steps.map((step: Step, index: number) => (
+              {t.howItWorks.steps.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
-                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/20 p-6 rounded-xl text-white hover:bg-white/30 transition-all"
+                  whileHover={{ scale: 1.05 }}
                 >
-                  <div className="text-4xl font-bold mb-4 text-blue-200">{index + 1}</div>
-                  <h3 className="text-xl font-bold mb-2 text-blue-200">{step.title}</h3>
-                  <p className="text-blue-100">{step.desc}</p>
+                  <div className="text-4xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                  <p>{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -305,7 +204,7 @@ const Home = () => {
           >
             <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.benefits.title}</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {t.benefits.items.map((item: Benefit, index: number) => (
+              {t.benefits.items.map((item, index) => (
                 <motion.div
                   key={index}
                   className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
@@ -320,23 +219,24 @@ const Home = () => {
         </section>
 
         {/* For Whom Section */}
-        <section className="py-20 px-4 relative">
+        <section className="py-20 px-4 relative bg-white/10">
           <motion.div 
-            className="container mx-auto"
+            className="container mx-auto text-white"
             initial="initial"
             whileInView="animate"
             variants={fadeIn}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.whoCanBenefit.title}</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {t.whoCanBenefit.items.map((item: Group, index: number) => (
+            <h2 className="text-4xl font-bold text-center mb-12">{t.whoCanBenefit.title}</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {t.whoCanBenefit.items.map((item, index) => (
                 <motion.div
                   key={index}
-                  className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
-                  whileHover={{ scale: 1.02 }}
+                  className="text-center"
+                  whileHover={{ scale: 1.05 }}
                 >
-                  <h3 className="text-xl font-bold mb-2 text-blue-200">{item.title}</h3>
+                  <div className="text-5xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
                   <p className="text-blue-100">{item.desc}</p>
                 </motion.div>
               ))}
@@ -345,9 +245,39 @@ const Home = () => {
         </section>
 
         {/* Footer */}
-        <footer className="py-8 px-4 relative">
-          <div className="container mx-auto text-center text-blue-100">
-            <p>© 2024 GrahmeenHealth. All rights reserved.</p>
+        <footer className="bg-[#1a1a2e]/80 text-white py-12">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-4 gap-8">
+              <div>
+                <h3 className="text-xl font-bold mb-4">GrahmeenHealth</h3>
+                <p className="text-blue-200">Developed by Team Access Denied</p>
+                <p className="text-blue-200">Licensed under Healthcare Standards</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-4">Contact Us</h3>
+                <p className="text-blue-200">Email: support@grahmeenhealth.com</p>
+                <p className="text-blue-200">Phone: +1 (555) 123-4567</p>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-4">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-blue-200 hover:text-white">About Us</a></li>
+                  <li><a href="#" className="text-blue-200 hover:text-white">Privacy Policy</a></li>
+                  <li><a href="#" className="text-blue-200 hover:text-white">Terms of Service</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-4">Follow Us</h3>
+                <div className="flex space-x-4">
+                  <a href="#" className="text-blue-200 hover:text-white">Twitter</a>
+                  <a href="#" className="text-blue-200 hover:text-white">LinkedIn</a>
+                  <a href="#" className="text-blue-200 hover:text-white">Facebook</a>
+                </div>
+              </div>
+            </div>
+            <div className="mt-8 pt-8 border-t border-blue-800/50 text-center">
+              <p className="text-blue-200">© 2024 GrahmeenHealth. All rights reserved.</p>
+            </div>
           </div>
         </footer>
       </div>

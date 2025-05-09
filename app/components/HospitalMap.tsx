@@ -41,7 +41,7 @@ const HospitalMap = ({ onClose }: HospitalMapProps) => {
     },
     {
       name: "Sparsh Hospital",
-      coordinates: "12.9045,77.4985",
+      coordinates: "12.8912,77.5850",
       type: "Orthopedic Hospital",
       address: "29/P2, Infantry Road, Bengaluru",
       phone: "080 2222 2222",
@@ -50,7 +50,7 @@ const HospitalMap = ({ onClose }: HospitalMapProps) => {
     },
     {
       name: "Narayana Health",
-      coordinates: "12.9711,77.5941",
+      coordinates: "12.908311541594493,77.64344902242856",
       type: "Cardiac Hospital",
       address: "258/A, Bommasandra Industrial Area, Hosur Road, Bengaluru",
       phone: "080 6750 6900",
@@ -59,7 +59,7 @@ const HospitalMap = ({ onClose }: HospitalMapProps) => {
     },
     {
       name: "Rainbow Children's Hospital",
-      coordinates: "12.9055,77.4995",
+      coordinates: "12.9050,77.4985",
       type: "Pediatric Hospital",
       address: "78, Marathahalli Road, Bengaluru",
       phone: "080 4530 2222",
@@ -68,16 +68,16 @@ const HospitalMap = ({ onClose }: HospitalMapProps) => {
     },
     {
       name: "Manipal Hospital",
-      coordinates: "12.9711,77.5941",
+      coordinates: "12.9060,77.4990",
       type: "Multi-Specialty Hospital",
       address: "98, HAL Airport Road, Kodihalli, Bengaluru",
       phone: "080 2502 4444",
       specialities: ["Cardiology", "Neurology", "Orthopedics", "Oncology"],
-      distance: "8.2 km"
+      distance: "4.5 km"
     },
     {
       name: "Apollo Hospital",
-      coordinates: "12.9065,77.5005",
+      coordinates: "12.9721,77.5951",
       type: "Multi-Specialty Hospital",
       address: "154, Bannerghatta Road, Bengaluru",
       phone: "080 2630 4050",
@@ -86,7 +86,7 @@ const HospitalMap = ({ onClose }: HospitalMapProps) => {
     },
     {
       name: "Fortis Hospital",
-      coordinates: "12.9070,77.5010",
+      coordinates: "12.9706,77.5936",
       type: "Multi-Specialty Hospital",
       address: "154, Bannerghatta Road, Bengaluru",
       phone: "080 6621 4444",
