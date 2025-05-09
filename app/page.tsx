@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -27,7 +28,8 @@ const Home = () => {
 
   const toggleLanguage = () => {
     setIsTranslating(true);
-    setLanguage(prev => prev === 'en' ? 'hi' : 'en');
+    const newLang = language === 'en' ? 'hi' : language === 'hi' ? 'kn' : 'en';
+    setLanguage(newLang);
     setIsTranslating(false);
   };
 
@@ -69,7 +71,7 @@ const Home = () => {
                   <span className="animate-spin">⟳</span>
                 ) : (
                   <>
-                    {language === 'en' ? 'हिंदी' : 'English'}
+                    {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                     </svg>
@@ -118,7 +120,7 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 className="w-full sm:w-auto"
               >
-                <Link 
+                <Link
                   href="/register?role=doctor"
                   className="group flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-cyan-500/30 transition-all text-xl font-semibold"
                 >
@@ -134,7 +136,7 @@ const Home = () => {
                 whileHover={{ scale: 1.05 }}
                 className="w-full sm:w-auto"
               >
-                <Link 
+                <Link
                   href="/register?role=patient"
                   className="group flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition-all text-xl font-semibold"
                 >
