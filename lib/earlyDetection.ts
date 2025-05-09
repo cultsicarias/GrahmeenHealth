@@ -1,6 +1,7 @@
 import { Symptom } from '../models/Appointment';
 import { MedicalCondition } from '../models/User';
 
+
 // Sample database of symptom to condition mappings
 // In a real application, this would come from a medical API or database
 const symptomConditionMap: Record<string, { condition: string, severity: number, urgency: number }[]> = {
