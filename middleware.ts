@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+
 // This middleware runs before any route handler
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
