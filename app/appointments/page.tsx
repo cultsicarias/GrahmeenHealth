@@ -24,6 +24,7 @@ interface Appointment {
   reason: string;
   status: 'scheduled' | 'completed' | 'cancelled';
   createdAt: string;
+  patientName: string;
 }
 
 export default function AppointmentsPage() {
@@ -121,7 +122,7 @@ export default function AppointmentsPage() {
       }
       
       // Update the appointments state
-      setAppointments(appointments.map(appointment => 
+      setAppointments(appointments.map((appointment: Appointment) => 
         appointment._id === appointmentId 
           ? { ...appointment, status: 'cancelled' } 
           : appointment
@@ -174,7 +175,7 @@ export default function AppointmentsPage() {
     : pastAppointments;
 
   // Add a fetch method to properly show doctor information in appointments
-  const fetchDoctorDetails = async (appointment) => {
+  const fetchDoctorDetails = async (appointment: Appointment) => {
     if (appointment.doctorImageUrl) {
       // Already has doctor info
       return appointment;
@@ -336,7 +337,7 @@ export default function AppointmentsPage() {
           </motion.div>
         ) : (
           <div className="space-y-4">
-            {displayedAppointments.map((appointment) => (
+            {displayedAppointments.map((appointment: Appointment) => (
               <div key={appointment._id} className="bg-white shadow rounded-lg overflow-hidden">
                 <div className="p-6">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -350,7 +351,7 @@ export default function AppointmentsPage() {
                       </div>
                       <div className="ml-4">
                         <h3 className="text-lg font-semibold text-gray-900">
-                          {appointment.doctorName}
+                          {appointment.patientName}
                         </h3>
                         <p className="text-sm text-blue-600 font-medium">
                           {appointment.doctorSpecialization || 'Specialist'}

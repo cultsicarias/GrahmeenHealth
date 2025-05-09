@@ -78,34 +78,20 @@ export default function DoctorView() {
       setError(null);
       console.log('Fetching appointments for doctor:', session.user.id);
 
-      const response = await fetch('/api/book-appointment');
+      const response = await fetch('/api/appointments');
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || 'Failed to fetch appointments');
       }
       
       const data = await response.json();
-      if (!Array.isArray(data.appointments)) {
+      if (!data.data || !Array.isArray(data.data)) {
         console.error('Invalid appointments data:', data);
         throw new Error('Invalid appointments data received');
       }
-      console.log('Received appointments:', data.appointments.length);
+      console.log('Received appointments:', data.data.length);
       
-      // Filter appointments for the current doctor
-      const doctorAppointments = data.appointments.filter((apt: Appointment) => {
-        const matches = apt.doctorId === session.user.id;
-        console.log('Appointment check:', { 
-          id: apt._id, 
-          doctorId: apt.doctorId, 
-          sessionId: session.user.id,
-          matches 
-        });
-        return matches;
-      });
-      
-      console.log('Doctor appointments found:', doctorAppointments.length);
-
-      const appointmentsWithInsights = doctorAppointments.map((apt: Appointment) => {
+      const appointmentsWithInsights = data.data.map((apt: Appointment) => {
         try {
           const insights = generateAIInsights(apt.symptoms);
           console.log('Generated insights for:', apt._id);

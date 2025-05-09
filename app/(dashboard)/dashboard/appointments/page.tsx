@@ -132,7 +132,11 @@ export default function AppointmentsPage() {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <h3 className="text-xl font-semibold mb-1">Dr. {appointment.doctorName}</h3>
+                    <h3 className="text-xl font-semibold mb-1">
+                      {session?.user?.role === 'doctor'
+                        ? appointment.patientName
+                        : `Dr. ${appointment.doctorName}`}
+                    </h3>
                     <p className="text-gray-600">
                       {new Date(appointment.date).toLocaleDateString('en-US', {
                         weekday: 'long',
