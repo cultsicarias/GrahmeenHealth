@@ -6,34 +6,53 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { translations } from './utils/translations';
 
+type Language = 'en' | 'hi' | 'kn';
+
+interface Step {
+  title: string;
+  desc: string;
+  icon: string;
+}
+
+interface Benefit {
+  title: string;
+  desc: string;
+}
+
+interface Group {
+  title: string;
+  desc: string;
+  icon: string;
+}
+
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.5 }
 };
 
 const Home = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [language, setLanguage] = useState('en');
-  const [isTranslating, setIsTranslating] = useState(false);
+  const [language, setLanguage] = useState<Language>('en');
+  const t = translations[language];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleLanguage = () => {
-    setIsTranslating(true);
-    const newLang = language === 'en' ? 'hi' : language === 'hi' ? 'kn' : 'en';
-    setLanguage(newLang);
-    setIsTranslating(false);
+    setLanguage(prev => {
+      switch(prev) {
+        case 'en': return 'hi';
+        case 'hi': return 'kn';
+        default: return 'en';
+      }
+    });
   };
-
-  const t = translations[language as keyof typeof translations];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -61,27 +80,23 @@ const Home = () => {
                 GrahmeenHealth
               </span>
             </div>
-            <div className="flex items-center space-x-4 mr-2">
+            <div className="flex items-center space-x-4">
               <button
                 onClick={toggleLanguage}
-                disabled={isTranslating}
-                className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20 flex items-center gap-2 disabled:opacity-50"
+                className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
               >
-                {isTranslating ? (
-                  <span className="animate-spin">⟳</span>
-                ) : (
-                  <>
-                    {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </>
-                )}
+                {language === 'en' ? 'हिंदी' : language === 'hi' ? 'ಕನ್ನಡ' : 'English'}
               </button>
-              <Link href="/login" className="text-lg font-semibold text-cyan-200 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-cyan-500/20">
+              <Link
+                href="/login"
+                className="px-6 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
+              >
                 Login
               </Link>
-              <Link href="/register" className="text-lg font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-cyan-500/30">
+              <Link
+                href="/register"
+                className="px-6 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500 text-white hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg hover:shadow-cyan-500/30"
+              >
                 Register
               </Link>
             </div>
@@ -115,7 +130,7 @@ const Home = () => {
             </p>
             
             {/* Doctor/Patient Options */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 className="w-full sm:w-auto"
@@ -152,7 +167,7 @@ const Home = () => {
         </section>
 
         {/* How it Works Section */}
-        <section className="py-20 px-4 relative bg-white/10">
+        <section className="py-20 px-4 relative">
           <motion.div 
             className="container mx-auto"
             initial="initial"
@@ -162,15 +177,15 @@ const Home = () => {
           >
             <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.howItWorks.title}</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              {t.howItWorks.steps.map((item, index) => (
+              {t.howItWorks.steps.map((step: Step, index: number) => (
                 <motion.div
                   key={index}
-                  className="bg-white/20 p-6 rounded-xl text-white hover:bg-white/30 transition-all"
-                  whileHover={{ scale: 1.05 }}
+                  className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
+                  whileHover={{ scale: 1.02 }}
                 >
-                  <div className="text-4xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                  <p>{item.desc}</p>
+                  <div className="text-4xl font-bold mb-4 text-blue-200">{index + 1}</div>
+                  <h3 className="text-xl font-bold mb-2 text-blue-200">{step.title}</h3>
+                  <p className="text-blue-100">{step.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -188,7 +203,7 @@ const Home = () => {
           >
             <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.benefits.title}</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {t.benefits.items.map((item, index) => (
+              {t.benefits.items.map((item: Benefit, index: number) => (
                 <motion.div
                   key={index}
                   className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
@@ -203,24 +218,23 @@ const Home = () => {
         </section>
 
         {/* For Whom Section */}
-        <section className="py-20 px-4 relative bg-white/10">
+        <section className="py-20 px-4 relative">
           <motion.div 
-            className="container mx-auto text-white"
+            className="container mx-auto"
             initial="initial"
             whileInView="animate"
             variants={fadeIn}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold text-center mb-12">{t.whoCanBenefit.title}</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              {t.whoCanBenefit.items.map((item, index) => (
+            <h2 className="text-4xl font-bold text-center mb-12 text-white">{t.whoCanBenefit.title}</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {t.whoCanBenefit.items.map((item: Group, index: number) => (
                 <motion.div
                   key={index}
-                  className="text-center"
-                  whileHover={{ scale: 1.05 }}
+                  className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-xl text-white"
+                  whileHover={{ scale: 1.02 }}
                 >
-                  <div className="text-5xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-blue-200">{item.title}</h3>
                   <p className="text-blue-100">{item.desc}</p>
                 </motion.div>
               ))}
@@ -229,39 +243,9 @@ const Home = () => {
         </section>
 
         {/* Footer */}
-        <footer className="bg-[#1a1a2e]/80 text-white py-12">
-          <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-4 gap-8">
-              <div>
-                <h3 className="text-xl font-bold mb-4">GrahmeenHealth</h3>
-                <p className="text-blue-200">Developed by Team Access Denied</p>
-                <p className="text-blue-200">Licensed under Healthcare Standards</p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-4">Contact Us</h3>
-                <p className="text-blue-200">Email: support@grahmeenhealth.com</p>
-                <p className="text-blue-200">Phone: +1 (555) 123-4567</p>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-4">Quick Links</h3>
-                <ul className="space-y-2">
-                  <li><a href="#" className="text-blue-200 hover:text-white">About Us</a></li>
-                  <li><a href="#" className="text-blue-200 hover:text-white">Privacy Policy</a></li>
-                  <li><a href="#" className="text-blue-200 hover:text-white">Terms of Service</a></li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-4">Follow Us</h3>
-                <div className="flex space-x-4">
-                  <a href="#" className="text-blue-200 hover:text-white">Twitter</a>
-                  <a href="#" className="text-blue-200 hover:text-white">LinkedIn</a>
-                  <a href="#" className="text-blue-200 hover:text-white">Facebook</a>
-                </div>
-              </div>
-            </div>
-            <div className="mt-8 pt-8 border-t border-blue-800/50 text-center">
-              <p className="text-blue-200">© 2024 GrahmeenHealth. All rights reserved.</p>
-            </div>
+        <footer className="py-8 px-4 relative">
+          <div className="container mx-auto text-center text-blue-100">
+            <p>© 2024 GrahmeenHealth. All rights reserved.</p>
           </div>
         </footer>
       </div>
