@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 export default function Login() {
   const router = useRouter();
@@ -70,17 +71,18 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center relative">
       {/* Background GIF */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 scale-75 origin-center">
+        <div className="absolute inset-0">
           <Image
-            src="https://i.pinimg.com/originals/ce/b1/1f/ceb11f58fa11f9b8c151cc3a4ce49b71.gif"
+            src="https://i.imgflip.com/9tg7b1.gif"
             alt="Medical Technology Background"
             fill
-            className="object-cover opacity-50"
+            className="object-cover"
             priority
             quality={100}
+            unoptimized
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 to-blue-800/70 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
       </div>
 
       {/* Content */}
@@ -96,7 +98,36 @@ export default function Login() {
         </Link>
 
         <div className="text-center">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent mb-2">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            className="mb-6"
+          >
+            <div className="relative w-[80px] h-[80px] mx-auto">
+              <Image
+                src="https://cdn-icons-png.flaticon.com/512/8841/8841503.png"
+                alt="AI Healthcare"
+                fill
+                className="animate-float"
+                style={{ objectFit: 'contain' }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full bg-cyan-500/20 blur-xl"
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.5, 0.3]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </div>
+          </motion.div>
+
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] mb-2">
             GrahmeenHealth
           </h1>
           <h2 className="mt-6 text-2xl font-bold text-white">
@@ -105,6 +136,36 @@ export default function Login() {
           <p className="mt-2 text-lg text-cyan-200 font-medium">
             Sign in to access your healthcare dashboard
           </p>
+
+          {/* Animated Stats */}
+          <motion.div 
+            className="grid grid-cols-3 gap-4 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <motion.div
+              className="bg-white/5 backdrop-blur-sm p-3 rounded-xl border border-white/10"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="text-xl font-bold text-cyan-300 mb-1">24/7</div>
+              <div className="text-white/80 text-sm">Support</div>
+            </motion.div>
+            <motion.div
+              className="bg-white/5 backdrop-blur-sm p-3 rounded-xl border border-white/10"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="text-xl font-bold text-blue-300 mb-1">100+</div>
+              <div className="text-white/80 text-sm">Doctors</div>
+            </motion.div>
+            <motion.div
+              className="bg-white/5 backdrop-blur-sm p-3 rounded-xl border border-white/10"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="text-xl font-bold text-purple-300 mb-1">50K+</div>
+              <div className="text-white/80 text-sm">Patients</div>
+            </motion.div>
+          </motion.div>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
