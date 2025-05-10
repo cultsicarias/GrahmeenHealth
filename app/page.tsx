@@ -213,8 +213,8 @@ const Home = () => {
         }`}>
           <div className="container mx-auto px-4 flex justify-between items-center">
             <div className="flex items-center">
-              <span className={`text-3xl md:text-4xl font-black bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] hover:from-cyan-200 hover:via-blue-200 hover:to-white transition-all duration-300 ${playfair.className}`}>
-                GrahmeenHealth
+              <span className={`text-5xl md:text-6xl font-black bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] hover:from-orange-400 hover:via-yellow-300 hover:to-amber-400 transition-all duration-300 tracking-wider ${playfair.className}`}>
+                Grahmeen Health
               </span>
             </div>
             <div className="flex items-center space-x-4 mr-2">

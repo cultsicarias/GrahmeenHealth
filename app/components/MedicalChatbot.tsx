@@ -103,6 +103,9 @@ const MedicalChatbot = () => {
   const [language, setLanguage] = useState<Language>('en');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const speechSynthesisRef = useRef<SpeechSynthesis | null>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -113,18 +116,83 @@ const MedicalChatbot = () => {
         recognitionRef.current.interimResults = false;
         recognitionRef.current.lang = language === 'en' ? 'en-US' : language === 'hi' ? 'hi-IN' : 'kn-IN';
 
-        recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+        recognitionRef.current.onstart = () => {
+          console.log('Speech recognition started');
+          setIsListening(true);
+        };
+
+        recognitionRef.current.onresult = (event: any) => {
           const transcript = event.results[0][0].transcript;
+          console.log('Speech recognition result:', transcript);
           setInput(transcript);
           handleSendMessage(transcript);
         };
 
         recognitionRef.current.onend = () => {
+          console.log('Speech recognition ended');
           setIsListening(false);
         };
+
+        recognitionRef.current.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error);
+          setIsListening(false);
+          
+          // Show user-friendly error messages in selected language
+          const errorMessages: Record<Language, Record<string, string>> = {
+            en: {
+              'not-allowed': 'Please allow microphone access to use voice input.',
+              'permission-denied': 'Please allow microphone access to use voice input.',
+              'no-speech': 'No speech was detected. Please try again.',
+              'audio-capture': 'No microphone was found. Please ensure your microphone is properly connected.',
+              'default': 'Error with speech recognition. Please try again.'
+            },
+            hi: {
+              'not-allowed': 'कृपया वॉइस इनपुट के लिए माइक्रोफोन एक्सेस की अनुमति दें।',
+              'permission-denied': 'कृपया वॉइस इनपुट के लिए माइक्रोफोन एक्सेस की अनुमति दें।',
+              'no-speech': 'कोई भाषण नहीं मिला। कृपया पुनः प्रयास करें।',
+              'audio-capture': 'कोई माइक्रोफोन नहीं मिला। कृपया सुनिश्चित करें कि आपका माइक्रोफोन सही से जुड़ा हुआ है।',
+              'default': 'स्पीच रिकग्निशन में त्रुटि। कृपया पुनः प्रयास करें।'
+            },
+            kn: {
+              'not-allowed': 'ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬಳಸಲು ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.',
+              'permission-denied': 'ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬಳಸಲು ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.',
+              'no-speech': 'ಯಾವುದೇ ಮಾತು ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+              'audio-capture': 'ಯಾವುದೇ ಮೈಕ್ರೊಫೋನ್ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಮೈಕ್ರೊಫೋನ್ ಸರಿಯಾಗಿ ಸಂಪರ್ಕಗೊಂಡಿದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.',
+              'default': 'ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆಯಲ್ಲಿ ದೋಷ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.'
+            }
+          };
+
+          const message = errorMessages[language][event.error as keyof typeof errorMessages[Language]] || errorMessages[language].default;
+          alert(message);
+        };
+      } else {
+        console.error('Speech recognition not supported');
       }
     }
   }, [language]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      speechSynthesisRef.current = window.speechSynthesis;
+    }
+  }, []);
+
+  // Add voice loading effect
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const loadVoices = () => {
+        const availableVoices = window.speechSynthesis.getVoices();
+        setVoices(availableVoices);
+      };
+
+      // Chrome loads voices asynchronously
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+      }
+      
+      loadVoices();
+    }
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -167,6 +235,104 @@ const MedicalChatbot = () => {
     }
   };
 
+  const getVoiceForLanguage = (lang: Language): SpeechSynthesisVoice | undefined => {
+    const langCode = lang === 'en' ? 'en-US' : lang === 'hi' ? 'hi-IN' : 'kn-IN';
+    
+    // Try to find a voice that matches the language exactly
+    let voice = voices.find(v => v.lang === langCode);
+    
+    // If no exact match, try to find a voice that starts with the language code
+    if (!voice) {
+      voice = voices.find(v => v.lang.startsWith(lang));
+    }
+    
+    // If still no match, try to find any voice that contains the language
+    if (!voice) {
+      voice = voices.find(v => v.lang.includes(lang));
+    }
+    
+    // If no matching voice found, return the first available voice
+    return voice || voices[0];
+  };
+
+  const speakText = (text: string) => {
+    if (!speechSynthesisRef.current) return;
+
+    // Stop any ongoing speech
+    speechSynthesisRef.current.cancel();
+
+    // Create a new utterance
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Set language based on selected language
+    const langCode = language === 'en' ? 'en-US' : language === 'hi' ? 'hi-IN' : 'kn-IN';
+    utterance.lang = langCode;
+    
+    // Get the appropriate voice for the language
+    const voice = getVoiceForLanguage(language);
+    if (voice) {
+      utterance.voice = voice;
+      console.log('Using voice:', voice.name, 'for language:', language);
+    }
+
+    // Adjust speech properties based on language
+    switch (language) {
+      case 'hi':
+        utterance.rate = 0.9; // Slightly slower for Hindi
+        utterance.pitch = 1.0;
+        break;
+      case 'kn':
+        utterance.rate = 0.9; // Slightly slower for Kannada
+        utterance.pitch = 1.0;
+        break;
+      default:
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+    }
+    
+    utterance.volume = 1.0;
+
+    // Handle speech events
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      console.log('Started speaking in:', language);
+    };
+    
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      console.log('Finished speaking in:', language);
+    };
+    
+    utterance.onerror = (event) => {
+      console.error('Speech synthesis error:', event);
+      setIsSpeaking(false);
+      
+      // Show error message in the selected language
+      const errorMessages = {
+        en: 'Sorry, there was an error with the speech synthesis. Please try again.',
+        hi: 'क्षमा करें, भाषण संश्लेषण में एक त्रुटि हुई। कृपया पुनः प्रयास करें।',
+        kn: 'ಕ್ಷಮಿಸಿ, ಧ್ವನಿ ಸಂಶ್ಲೇಷಣೆಯಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.'
+      };
+      
+      alert(errorMessages[language]);
+    };
+
+    // Speak the text
+    try {
+      speechSynthesisRef.current.speak(utterance);
+    } catch (error) {
+      console.error('Error starting speech synthesis:', error);
+      setIsSpeaking(false);
+    }
+  };
+
+  const stopSpeaking = () => {
+    if (speechSynthesisRef.current) {
+      speechSynthesisRef.current.cancel();
+      setIsSpeaking(false);
+    }
+  };
+
   const handleSendMessage = async (message: string) => {
     if (!message.trim()) return;
 
@@ -187,45 +353,89 @@ const MedicalChatbot = () => {
         message.toLowerCase().includes(keyword)
       );
 
+      let responseContent = '';
       if (isEmergency) {
-        setMessages([
-          ...newMessages,
-          { role: 'assistant' as const, content: translations[language].emergency }
-        ]);
-        return;
+        responseContent = translations[language].emergency;
+      } else {
+        // Get response from ChatGPT
+        const response = await getChatGPTResponse(message, language);
+        responseContent = response + '\n\n' + translations[language].disclaimer;
       }
 
-      // Get response from ChatGPT
-      const response = await getChatGPTResponse(message, language);
-      
       setMessages([
         ...newMessages,
-        { role: 'assistant' as const, content: response + '\n\n' + translations[language].disclaimer }
+        { role: 'assistant' as const, content: responseContent }
       ]);
+
+      // Speak the response
+      speakText(responseContent);
     } catch (error) {
       console.error('Error:', error);
+      const errorMessage = translations[language].error;
       setMessages([
         ...newMessages,
-        { role: 'assistant' as const, content: translations[language].error }
+        { role: 'assistant' as const, content: errorMessage }
       ]);
+      speakText(errorMessage);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const toggleListening = () => {
-    if (!recognitionRef.current) {
-      alert('Speech recognition is not supported in your browser.');
-      return;
-    }
+  const toggleListening = async () => {
+    try {
+      if (!recognitionRef.current) {
+        alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+        return;
+      }
 
-    if (isListening) {
-      recognitionRef.current.stop();
-    } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      // Check if we already have permission
+      const permissions = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+      
+      if (permissions.state === 'denied') {
+        alert('Microphone access is blocked. Please enable it in your browser settings to use voice input.');
+        return;
+      }
+
+      if (permissions.state === 'prompt') {
+        // Request permission explicitly
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(track => track.stop());
+        } catch (err) {
+          console.error('Error requesting microphone permission:', err);
+          alert('Please allow microphone access in your browser to use voice input.');
+          return;
+        }
+      }
+
+      if (isListening) {
+        recognitionRef.current.stop();
+      } else {
+        recognitionRef.current.start();
+      }
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      if (error instanceof Error) {
+        if (error.name === 'NotAllowedError') {
+          alert('Microphone access was denied. Please allow microphone access in your browser settings to use voice input.');
+        } else if (error.name === 'NotFoundError') {
+          alert('No microphone found. Please ensure your microphone is properly connected.');
+        } else {
+          alert('Error accessing microphone. Please try again.');
+        }
+      }
     }
   };
+
+  // Add cleanup for speech synthesis
+  useEffect(() => {
+    return () => {
+      if (speechSynthesisRef.current) {
+        speechSynthesisRef.current.cancel();
+      }
+    };
+  }, []);
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -279,7 +489,47 @@ const MedicalChatbot = () => {
                         : 'bg-gray-100 text-gray-800'
                     }`}
                   >
-                    {message.content}
+                    <div className="flex items-start justify-between gap-2">
+                      <div>{message.content}</div>
+                      {message.role === 'assistant' && (
+                        <button
+                          onClick={() => {
+                            if (isSpeaking) {
+                              stopSpeaking();
+                            } else {
+                              speakText(message.content);
+                            }
+                          }}
+                          className={`p-1 rounded-full hover:bg-gray-200 transition-colors ${
+                            isSpeaking ? 'text-red-500' : 'text-gray-500'
+                          }`}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            {isSpeaking ? (
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z M10 15l-3-3m0 0l3-3m-3 3h12"
+                              />
+                            ) : (
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728"
+                              />
+                            )}
+                          </svg>
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -304,14 +554,6 @@ const MedicalChatbot = () => {
             {/* Chat Input */}
             <div className="p-4 border-t border-gray-200">
               <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(input)}
-                  placeholder={translations[language].placeholder}
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
                 <button
                   onClick={toggleListening}
                   className={`p-2 rounded-lg ${
@@ -324,6 +566,14 @@ const MedicalChatbot = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                   </svg>
                 </button>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(input)}
+                  placeholder={translations[language].placeholder}
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
                 <button
                   onClick={() => handleSendMessage(input)}
                   className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"

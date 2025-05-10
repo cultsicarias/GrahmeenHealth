@@ -176,6 +176,38 @@ export default function AppointmentsPage() {
                     ))}
                   </div>
                 </div>
+
+                {/* --- SMS Button --- */}
+                <button
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  onClick={async () => {
+                    try {
+                      const res = await fetch('/api/send-sms', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          message: `Dr. ${appointment.doctorName}`
+                        })
+                      });
+                      let data;
+                      try {
+                        data = await res.json();
+                      } catch {
+                        data = {};
+                      }
+                      if (res.ok) {
+                        alert('SMS sent!');
+                      } else {
+                        alert('Failed to send SMS: ' + (data.error || JSON.stringify(data) || 'Unknown error'));
+                      }
+                    } catch (err: any) {
+                      alert('Failed to send SMS: ' + err.message);
+                    }
+                  }}
+                >
+                  Send SMS
+                </button>
+                {/* --- End SMS Button --- */}
               </div>
             </motion.div>
           ))}
