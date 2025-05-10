@@ -113,15 +113,57 @@ const MedicalChatbot = () => {
         recognitionRef.current.interimResults = false;
         recognitionRef.current.lang = language === 'en' ? 'en-US' : language === 'hi' ? 'hi-IN' : 'kn-IN';
 
-        recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+        recognitionRef.current.onstart = () => {
+          console.log('Speech recognition started');
+          setIsListening(true);
+        };
+
+        recognitionRef.current.onresult = (event: any) => {
           const transcript = event.results[0][0].transcript;
+          console.log('Speech recognition result:', transcript);
           setInput(transcript);
           handleSendMessage(transcript);
         };
 
         recognitionRef.current.onend = () => {
+          console.log('Speech recognition ended');
           setIsListening(false);
         };
+
+        recognitionRef.current.onerror = (event: any) => {
+          console.error('Speech recognition error:', event.error);
+          setIsListening(false);
+          
+          // Show user-friendly error messages in selected language
+          const errorMessages: Record<Language, Record<string, string>> = {
+            en: {
+              'not-allowed': 'Please allow microphone access to use voice input.',
+              'permission-denied': 'Please allow microphone access to use voice input.',
+              'no-speech': 'No speech was detected. Please try again.',
+              'audio-capture': 'No microphone was found. Please ensure your microphone is properly connected.',
+              'default': 'Error with speech recognition. Please try again.'
+            },
+            hi: {
+              'not-allowed': 'कृपया वॉइस इनपुट के लिए माइक्रोफोन एक्सेस की अनुमति दें।',
+              'permission-denied': 'कृपया वॉइस इनपुट के लिए माइक्रोफोन एक्सेस की अनुमति दें।',
+              'no-speech': 'कोई भाषण नहीं मिला। कृपया पुनः प्रयास करें।',
+              'audio-capture': 'कोई माइक्रोफोन नहीं मिला। कृपया सुनिश्चित करें कि आपका माइक्रोफोन सही से जुड़ा हुआ है।',
+              'default': 'स्पीच रिकग्निशन में त्रुटि। कृपया पुनः प्रयास करें।'
+            },
+            kn: {
+              'not-allowed': 'ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬಳಸಲು ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.',
+              'permission-denied': 'ಧ್ವನಿ ಇನ್‌ಪುಟ್ ಬಳಸಲು ಮೈಕ್ರೊಫೋನ್ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ.',
+              'no-speech': 'ಯಾವುದೇ ಮಾತು ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+              'audio-capture': 'ಯಾವುದೇ ಮೈಕ್ರೊಫೋನ್ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಮೈಕ್ರೊಫೋನ್ ಸರಿಯಾಗಿ ಸಂಪರ್ಕಗೊಂಡಿದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.',
+              'default': 'ಧ್ವನಿ ಗುರುತಿಸುವಿಕೆಯಲ್ಲಿ ದೋಷ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.'
+            }
+          };
+
+          const message = errorMessages[language][event.error as keyof typeof errorMessages[Language]] || errorMessages[language].default;
+          alert(message);
+        };
+      } else {
+        console.error('Speech recognition not supported');
       }
     }
   }, [language]);
@@ -213,17 +255,49 @@ const MedicalChatbot = () => {
     }
   };
 
-  const toggleListening = () => {
-    if (!recognitionRef.current) {
-      alert('Speech recognition is not supported in your browser.');
-      return;
-    }
+  const toggleListening = async () => {
+    try {
+      if (!recognitionRef.current) {
+        alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+        return;
+      }
 
-    if (isListening) {
-      recognitionRef.current.stop();
-    } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      // Check if we already have permission
+      const permissions = await navigator.permissions.query({ name: 'microphone' as PermissionName });
+      
+      if (permissions.state === 'denied') {
+        alert('Microphone access is blocked. Please enable it in your browser settings to use voice input.');
+        return;
+      }
+
+      if (permissions.state === 'prompt') {
+        // Request permission explicitly
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(track => track.stop());
+        } catch (err) {
+          console.error('Error requesting microphone permission:', err);
+          alert('Please allow microphone access in your browser to use voice input.');
+          return;
+        }
+      }
+
+      if (isListening) {
+        recognitionRef.current.stop();
+      } else {
+        recognitionRef.current.start();
+      }
+    } catch (error) {
+      console.error('Error accessing microphone:', error);
+      if (error instanceof Error) {
+        if (error.name === 'NotAllowedError') {
+          alert('Microphone access was denied. Please allow microphone access in your browser settings to use voice input.');
+        } else if (error.name === 'NotFoundError') {
+          alert('No microphone found. Please ensure your microphone is properly connected.');
+        } else {
+          alert('Error accessing microphone. Please try again.');
+        }
+      }
     }
   };
 
@@ -304,14 +378,6 @@ const MedicalChatbot = () => {
             {/* Chat Input */}
             <div className="p-4 border-t border-gray-200">
               <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(input)}
-                  placeholder={translations[language].placeholder}
-                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
                 <button
                   onClick={toggleListening}
                   className={`p-2 rounded-lg ${
@@ -324,6 +390,14 @@ const MedicalChatbot = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
                   </svg>
                 </button>
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage(input)}
+                  placeholder={translations[language].placeholder}
+                  className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
                 <button
                   onClick={() => handleSendMessage(input)}
                   className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
