@@ -39,10 +39,14 @@ A modern healthcare platform designed to bridge the gap between healthcare provi
 3. Set up environment variables:
    Create a `.env.local` file with the following variables:
    ```
-   MONGODB_URI=your_mongodb_connection_string
+   MONGODB_URI=mongodb_connection_string
    NEXTAUTH_SECRET=your_nextauth_secret
    NEXTAUTH_URL=http://localhost:3000
-   GOOGLE_AI_API_KEY=your_google_ai_api_key
+   GOOGLE_AI_API_KEY=your_api_key 
+   TWILIO_ACCOUNT_SID=your_twilio_account_sid
+   TWILIO_AUTH_TOKEN=your_auth_token
+   TWILIO_PHONE_NUMBER=your_twilio_phone_number
+   RECIPIENT_PHONE_NUMBER=required_phone_number
    ```
 
 4. Run the development server:
