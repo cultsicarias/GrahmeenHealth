@@ -65,9 +65,9 @@ export default function Sidebar({ isOpen, setIsOpen, userRole }: SidebarProps) {
         } md:translate-x-0 md:static md:h-screen md:w-64`}
       >
         <div className="flex-1 flex flex-col overflow-y-auto">
-          <div className="flex items-center justify-center h-16 px-4 bg-blue-600">
-            <Link href="/dashboard" className="text-white font-bold text-xl">
-              GrahmeenHealth
+          <div className="flex items-center justify-center h-16 px-4 bg-gradient-to-r from-amber-600 to-orange-600">
+            <Link href="/dashboard" className="text-white font-black text-2xl tracking-wider hover:text-yellow-200 transition-colors">
+              Grahmeen Health
             </Link>
           </div>
 

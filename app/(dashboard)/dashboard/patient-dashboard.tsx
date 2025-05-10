@@ -28,13 +28,18 @@ export default function PatientDashboard() {
     const fetchPatientData = async () => {
       try {
         const [appointmentsRes, medicationsRes] = await Promise.all([
-          fetch('/api/appointments/next'),
+          fetch('/api/appointments'),
           fetch('/api/medications')
         ]);
 
         if (appointmentsRes.ok) {
           const appointmentsData = await appointmentsRes.json();
-          setNextAppointment(appointmentsData.nextAppointment);
+          // Get the next upcoming appointment
+          const upcomingAppointments = appointmentsData.data
+            .filter((apt: any) => apt.status === 'scheduled')
+            .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+          
+          setNextAppointment(upcomingAppointments[0] || null);
         }
 
         if (medicationsRes.ok) {
@@ -50,11 +55,11 @@ export default function PatientDashboard() {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gradient-to-br from-amber-50 via-white to-orange-50 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Welcome, {session?.user?.name}</h1>
       
       {/* Next Appointment */}
-      <div className="bg-white p-6 rounded-lg shadow mb-6">
+      <div className="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow mb-6">
         <h2 className="text-lg font-semibold mb-4">Next Appointment</h2>
         {nextAppointment ? (
           <div className="space-y-2">

@@ -315,8 +315,8 @@ export default function Register() {
             </div>
           </motion.div>
 
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] mb-2">
-            GrahmeenHealth
+          <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] mb-2 tracking-wider">
+            Grahmeen Health
           </h1>
           <h2 className="mt-6 text-2xl font-bold text-white">
             Create Your Account
