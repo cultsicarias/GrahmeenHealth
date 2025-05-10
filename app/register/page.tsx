@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { FaUserInjured, FaUserMd } from 'react-icons/fa';
 
 export default function Register() {
   const router = useRouter();
@@ -257,17 +259,18 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center relative py-12">
       {/* Background GIF */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 scale-75 origin-center">
+        <div className="absolute inset-0">
           <Image
-            src="https://i.pinimg.com/originals/ce/b1/1f/ceb11f58fa11f9b8c151cc3a4ce49b71.gif"
+            src="https://i.imgflip.com/9tg7b1.gif"
             alt="Medical Technology Background"
             fill
-            className="object-cover opacity-50"
+            className="object-cover"
             priority
             quality={100}
+            unoptimized
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 to-blue-800/70 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]"></div>
       </div>
 
       {/* Content */}
@@ -283,8 +286,37 @@ export default function Register() {
         </Link>
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text text-transparent mb-2">
-            GrahmeenHealth
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            className="mb-6"
+          >
+            <div className="relative w-[80px] h-[80px] mx-auto">
+              <Image
+                src="https://cdn-icons-png.flaticon.com/512/8841/8841503.png"
+                alt="AI Healthcare"
+                fill
+                className="animate-float"
+                style={{ objectFit: 'contain' }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full bg-cyan-500/20 blur-xl"
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.5, 0.3]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </div>
+          </motion.div>
+
+          <h1 className="text-5xl md:text-6xl font-black bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] mb-2 tracking-wider">
+            Grahmeen Health
           </h1>
           <h2 className="mt-6 text-2xl font-bold text-white">
             Create Your Account
@@ -292,12 +324,48 @@ export default function Register() {
           <p className="mt-2 text-lg text-cyan-200 font-medium">
             Join our healthcare platform to manage your medical journey
           </p>
+
+          {/* Animated Stats */}
+          <motion.div 
+            className="grid grid-cols-3 gap-4 mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <motion.div
+              className="bg-white/5 backdrop-blur-sm p-3 rounded-xl border border-white/10"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="text-xl font-bold text-cyan-300 mb-1">24/7</div>
+              <div className="text-white/80 text-sm">Support</div>
+            </motion.div>
+            <motion.div
+              className="bg-white/5 backdrop-blur-sm p-3 rounded-xl border border-white/10"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="text-xl font-bold text-blue-300 mb-1">100+</div>
+              <div className="text-white/80 text-sm">Doctors</div>
+            </motion.div>
+            <motion.div
+              className="bg-white/5 backdrop-blur-sm p-3 rounded-xl border border-white/10"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="text-xl font-bold text-purple-300 mb-1">50K+</div>
+              <div className="text-white/80 text-sm">Patients</div>
+            </motion.div>
+          </motion.div>
         </div>
         
         <div className="mb-8">
           <div className="flex justify-between items-center">
             {[1, 2].map((stepNum) => (
-              <div key={stepNum} className="flex-1">
+              <motion.div 
+                key={stepNum} 
+                className="flex-1"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: stepNum * 0.2 }}
+              >
                 <div
                   className={`h-2 rounded-full transition-all ${
                     step >= stepNum
@@ -310,12 +378,12 @@ export default function Register() {
                 }`}>
                   Step {stepNum}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
         
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="bg-black/40 backdrop-blur-md rounded-xl overflow-hidden border border-white/10">
           {error && (
             <div className="bg-red-50 border-l-4 border-red-400 p-4">
               <div className="flex">
@@ -339,7 +407,7 @@ export default function Register() {
               // Step 1: Basic information
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="name" className="block text-base font-medium text-cyan-100">
                     Full Name
                   </label>
                   <input
@@ -348,13 +416,13 @@ export default function Register() {
                     name="name"
                     value={basicInfo.name}
                     onChange={handleBasicInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="email" className="block text-base font-medium text-cyan-100">
                     Email Address
                   </label>
                   <input
@@ -363,13 +431,13 @@ export default function Register() {
                     name="email"
                     value={basicInfo.email}
                     onChange={handleBasicInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="password" className="block text-base font-medium text-cyan-100">
                     Password
                   </label>
                   <input
@@ -378,92 +446,110 @@ export default function Register() {
                     name="password"
                     value={basicInfo.password}
                     onChange={handleBasicInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     required
                   />
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1 text-sm text-cyan-200/80">
                     Password must be at least 6 characters long
                   </p>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-4">
+                  <label className="block text-base font-medium text-cyan-100 mb-4">
                     I am a
                   </label>
                   <div className="grid grid-cols-2 gap-6">
-                    <button
+                    <motion.button
                       type="button"
                       onClick={() => setBasicInfo(prev => ({ ...prev, role: 'patient' }))}
-                      className={`relative p-6 border-2 rounded-xl transition-all duration-300 transform hover:scale-105 ${
+                      className={`relative p-6 rounded-xl transition-all duration-300 ${
                         basicInfo.role === 'patient'
-                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 shadow-lg'
-                          : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                          ? 'bg-gradient-to-r from-rose-500 to-pink-500 shadow-lg shadow-rose-500/30'
+                          : 'bg-white/10 backdrop-blur-sm border border-white/20 hover:border-cyan-200/50'
                       }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <div className="flex flex-col items-center text-center">
                         <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
                           basicInfo.role === 'patient'
-                            ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-600'
+                            ? 'bg-white/20 text-white'
+                            : 'bg-white/10 text-cyan-200'
                         }`}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
+                          <FaUserInjured className="h-8 w-8 animate-pulse" />
                         </div>
                         <span className={`text-lg font-semibold mb-1 ${
                           basicInfo.role === 'patient'
-                            ? 'text-blue-600'
-                            : 'text-gray-700'
+                            ? 'text-white'
+                            : 'text-cyan-200'
                         }`}>Patient</span>
-                        <span className="text-sm text-gray-500">Looking for medical care</span>
+                        <span className={`text-sm ${
+                          basicInfo.role === 'patient'
+                            ? 'text-white/80'
+                            : 'text-cyan-200/70'
+                        }`}>Looking for medical care</span>
                       </div>
                       {basicInfo.role === 'patient' && (
-                        <div className="absolute top-3 right-3">
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
-                            <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <motion.div
+                          className="absolute top-3 right-3"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                        >
+                          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                            <svg className="h-4 w-4 text-rose-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </div>
-                        </div>
+                        </motion.div>
                       )}
-                    </button>
+                    </motion.button>
 
-                    <button
+                    <motion.button
                       type="button"
                       onClick={() => setBasicInfo(prev => ({ ...prev, role: 'doctor' }))}
-                      className={`relative p-6 border-2 rounded-xl transition-all duration-300 transform hover:scale-105 ${
+                      className={`relative p-6 rounded-xl transition-all duration-300 ${
                         basicInfo.role === 'doctor'
-                          ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-blue-100 shadow-lg'
-                          : 'border-gray-200 hover:border-blue-300 hover:bg-gray-50'
+                          ? 'bg-gradient-to-r from-pink-500 to-fuchsia-500 shadow-lg shadow-pink-500/30'
+                          : 'bg-white/10 backdrop-blur-sm border border-white/20 hover:border-cyan-200/50'
                       }`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       <div className="flex flex-col items-center text-center">
                         <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-3 transition-all duration-300 ${
                           basicInfo.role === 'doctor'
-                            ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-md'
-                            : 'bg-gray-100 text-gray-600'
+                            ? 'bg-white/20 text-white'
+                            : 'bg-white/10 text-cyan-200'
                         }`}>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
+                          <FaUserMd className="h-8 w-8 animate-pulse" />
                         </div>
                         <span className={`text-lg font-semibold mb-1 ${
                           basicInfo.role === 'doctor'
-                            ? 'text-blue-600'
-                            : 'text-gray-700'
+                            ? 'text-white'
+                            : 'text-cyan-200'
                         }`}>Doctor</span>
-                        <span className="text-sm text-gray-500">Providing medical care</span>
+                        <span className={`text-sm ${
+                          basicInfo.role === 'doctor'
+                            ? 'text-white/80'
+                            : 'text-cyan-200/70'
+                        }`}>Providing medical care</span>
                       </div>
                       {basicInfo.role === 'doctor' && (
-                        <div className="absolute top-3 right-3">
-                          <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center animate-pulse">
-                            <svg className="h-4 w-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <motion.div
+                          className="absolute top-3 right-3"
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                        >
+                          <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
+                            <svg className="h-4 w-4 text-pink-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </div>
-                        </div>
+                        </motion.div>
                       )}
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               </div>
@@ -471,7 +557,7 @@ export default function Register() {
               // Step 2: Doctor information
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="specialization" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="specialization" className="block text-base font-medium text-cyan-100">
                     Specialization
                   </label>
                   <input
@@ -480,13 +566,13 @@ export default function Register() {
                     name="specialization"
                     value={doctorInfo.specialization}
                     onChange={handleDoctorInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="licenseNumber" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="licenseNumber" className="block text-base font-medium text-cyan-100">
                     License Number
                   </label>
                   <input
@@ -495,12 +581,12 @@ export default function Register() {
                     name="licenseNumber"
                     value={doctorInfo.licenseNumber}
                     onChange={handleDoctorInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="experience" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="experience" className="block text-base font-medium text-cyan-100">
                     Years of Experience
                   </label>
                   <input
@@ -509,13 +595,13 @@ export default function Register() {
                     name="experience"
                     value={doctorInfo.experience}
                     onChange={handleDoctorInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     min="0"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="qualifications" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="qualifications" className="block text-base font-medium text-cyan-100">
                     Qualifications
                   </label>
                   <input
@@ -524,12 +610,12 @@ export default function Register() {
                     name="qualifications"
                     value={doctorInfo.qualifications}
                     onChange={handleDoctorInfoChange}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
                 
                 <div>
-                  <span className="block text-sm font-medium text-gray-700 mb-2">
+                  <span className="block text-base font-medium text-cyan-100 mb-2">
                     Availability
                   </span>
                   <div className="grid grid-cols-7 gap-2 mb-4">
@@ -538,10 +624,10 @@ export default function Register() {
                         key={day}
                         type="button"
                         onClick={() => handleDaySelection(day)}
-                        className={`py-2 px-2 text-xs sm:text-sm text-center rounded-md ${
+                        className={`py-2 px-2 text-xs sm:text-sm text-center rounded-md transition-all ${
                           doctorInfo.availability.days.includes(day)
-                            ? 'bg-blue-100 text-blue-800 border border-blue-500'
-                            : 'bg-gray-100 text-gray-800 border border-gray-300'
+                            ? 'bg-cyan-500/20 text-cyan-100 border border-cyan-300/50'
+                            : 'bg-white/10 text-cyan-200/70 border border-white/20 hover:border-cyan-200/50'
                         }`}
                       >
                         {day.slice(0, 3)}
@@ -550,7 +636,7 @@ export default function Register() {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="availability.startTime" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="availability.startTime" className="block text-base font-medium text-cyan-100">
                         Start Time
                       </label>
                       <input
@@ -559,11 +645,11 @@ export default function Register() {
                         name="availability.startTime"
                         value={doctorInfo.availability.startTime}
                         onChange={handleDoctorInfoChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       />
                     </div>
                     <div>
-                      <label htmlFor="availability.endTime" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="availability.endTime" className="block text-base font-medium text-cyan-100">
                         End Time
                       </label>
                       <input
@@ -572,14 +658,14 @@ export default function Register() {
                         name="availability.endTime"
                         value={doctorInfo.availability.endTime}
                         onChange={handleDoctorInfoChange}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       />
                     </div>
                   </div>
                 </div>
                 
                 <div>
-                  <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                  <label htmlFor="about" className="block text-base font-medium text-cyan-100">
                     About
                   </label>
                   <textarea
@@ -588,7 +674,7 @@ export default function Register() {
                     value={doctorInfo.about}
                     onChange={handleDoctorInfoChange}
                     rows={3}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                   />
                 </div>
               </div>
@@ -597,38 +683,38 @@ export default function Register() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+                    <label htmlFor="phone" className="block text-base font-medium text-cyan-100">Phone Number</label>
                     <input
                       type="tel"
                       id="phone"
                       name="phone"
                       value={patientInfo.phone}
                       onChange={handlePatientInfoChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       placeholder="e.g., 9876543210"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Date of Birth</label>
+                    <label htmlFor="dateOfBirth" className="block text-base font-medium text-cyan-100">Date of Birth</label>
                     <input
                       type="date"
                       id="dateOfBirth"
                       name="dateOfBirth"
                       value={patientInfo.dateOfBirth}
                       onChange={handlePatientInfoChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+                    <label htmlFor="gender" className="block text-base font-medium text-cyan-100">Gender</label>
                     <select
                       id="gender"
                       name="gender"
                       value={patientInfo.gender}
                       onChange={handlePatientInfoChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       required
                     >
                       <option value="">Select</option>
@@ -641,13 +727,13 @@ export default function Register() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label htmlFor="bloodGroup" className="block text-sm font-medium text-gray-700">Blood Group</label>
+                    <label htmlFor="bloodGroup" className="block text-base font-medium text-cyan-100">Blood Group</label>
                     <select
                       id="bloodGroup"
                       name="bloodGroup"
                       value={patientInfo.bloodGroup}
                       onChange={handlePatientInfoChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       required
                     >
                       <option value="">Select</option>
@@ -662,33 +748,33 @@ export default function Register() {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="height" className="block text-sm font-medium text-gray-700">Height (cm)</label>
+                    <label htmlFor="height" className="block text-base font-medium text-cyan-100">Height (cm)</label>
                     <input
                       type="number"
                       id="height"
                       name="height"
                       value={patientInfo.height}
                       onChange={handlePatientInfoChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       min="0"
                     />
                   </div>
                   <div>
-                    <label htmlFor="weight" className="block text-sm font-medium text-gray-700">Weight (kg)</label>
+                    <label htmlFor="weight" className="block text-base font-medium text-cyan-100">Weight (kg)</label>
                     <input
                       type="number"
                       id="weight"
                       name="weight"
                       value={patientInfo.weight}
                       onChange={handlePatientInfoChange}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                      className="mt-1 block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                       min="0"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-base font-medium text-cyan-100 mb-2">
                     Allergies
                   </label>
                   {patientInfo.allergies.map((allergy, index) => (
@@ -697,14 +783,14 @@ export default function Register() {
                         type="text"
                         value={allergy}
                         onChange={(e) => handleAllergyChange(index, e.target.value)}
-                        className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                         placeholder="e.g., Peanuts, Penicillin"
                       />
                       {index === patientInfo.allergies.length - 1 && (
                         <button
                           type="button"
                           onClick={addAllergy}
-                          className="ml-2 px-3 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200"
+                          className="ml-2 px-3 py-2 bg-cyan-500/20 text-cyan-200 rounded hover:bg-cyan-500/30 transition-colors"
                         >
                           +
                         </button>
@@ -714,7 +800,7 @@ export default function Register() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-base font-medium text-cyan-100 mb-2">
                     Medical Conditions
                   </label>
                   {patientInfo.medicalConditions.map((condition, index) => (
@@ -724,7 +810,7 @@ export default function Register() {
                           type="text"
                           value={condition.name}
                           onChange={(e) => handleConditionChange(index, 'name', e.target.value)}
-                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                           placeholder="e.g., Diabetes, Hypertension"
                         />
                       </div>
@@ -732,7 +818,7 @@ export default function Register() {
                         <select
                           value={condition.severity}
                           onChange={(e) => handleConditionChange(index, 'severity', e.target.value)}
-                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                         >
                           <option value="mild">Mild</option>
                           <option value="moderate">Moderate</option>
@@ -744,7 +830,7 @@ export default function Register() {
                           <button
                             type="button"
                             onClick={addCondition}
-                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            className="text-cyan-300 hover:text-cyan-100 text-sm font-medium transition-colors"
                           >
                             + Add Another Condition
                           </button>
@@ -755,7 +841,7 @@ export default function Register() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-base font-medium text-cyan-100 mb-2">
                     Current Medications
                   </label>
                   {patientInfo.medications.map((medication, index) => (
@@ -765,7 +851,7 @@ export default function Register() {
                           type="text"
                           value={medication.name}
                           onChange={(e) => handleMedicationChange(index, 'name', e.target.value)}
-                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                           placeholder="Medication name"
                         />
                       </div>
@@ -774,7 +860,7 @@ export default function Register() {
                           type="text"
                           value={medication.dosage}
                           onChange={(e) => handleMedicationChange(index, 'dosage', e.target.value)}
-                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                           placeholder="Dosage (e.g., 10mg)"
                         />
                       </div>
@@ -783,7 +869,7 @@ export default function Register() {
                           type="text"
                           value={medication.frequency}
                           onChange={(e) => handleMedicationChange(index, 'frequency', e.target.value)}
-                          className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                          className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                           placeholder="Frequency (e.g., twice a day)"
                         />
                       </div>
@@ -792,7 +878,7 @@ export default function Register() {
                           <button
                             type="button"
                             onClick={addMedication}
-                            className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            className="text-cyan-300 hover:text-cyan-100 text-sm font-medium transition-colors"
                           >
                             + Add Another Medication
                           </button>
@@ -803,7 +889,7 @@ export default function Register() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-base font-medium text-cyan-100 mb-2">
                     Emergency Contact
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -813,7 +899,7 @@ export default function Register() {
                         name="emergencyContact.name"
                         value={patientInfo.emergencyContact.name}
                         onChange={handlePatientInfoChange}
-                        className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                         placeholder="Contact name"
                       />
                     </div>
@@ -823,7 +909,7 @@ export default function Register() {
                         name="emergencyContact.phone"
                         value={patientInfo.emergencyContact.phone}
                         onChange={handlePatientInfoChange}
-                        className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                         placeholder="Phone number"
                       />
                     </div>
@@ -833,7 +919,7 @@ export default function Register() {
                         name="emergencyContact.relationship"
                         value={patientInfo.emergencyContact.relationship}
                         onChange={handlePatientInfoChange}
-                        className="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        className="block w-full px-3 py-2 bg-black/30 border border-cyan-300/30 rounded-md text-white placeholder-cyan-300/50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                         placeholder="Relationship"
                       />
                     </div>
@@ -847,7 +933,7 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-6 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                className="px-6 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 disabled:opacity-50 transition-all"
               >
                 {loading ? 'Processing...' : step === 1 ? 'Next' : 'Register'}
               </button>
@@ -856,9 +942,9 @@ export default function Register() {
         </div>
         
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-base text-cyan-200 font-medium">
             Already have an account?{' '}
-            <Link href="/login" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/login" className="font-semibold text-cyan-300 hover:text-cyan-100 transition-colors">
               Sign in
             </Link>
           </p>

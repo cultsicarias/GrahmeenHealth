@@ -6,8 +6,16 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { translations } from './utils/translations';
 import HospitalMap from './components/HospitalMap';
-import { FaUserMd, FaUserInjured, FaHeartbeat, FaAmbulance, FaHospital, FaStethoscope } from 'react-icons/fa';
+import { FaUserMd, FaUserInjured, FaHeartbeat, FaAmbulance, FaHospital, FaStethoscope, FaCalendarAlt, FaFileMedical, FaBell, FaQuestionCircle } from 'react-icons/fa';
 import { MdHealthAndSafety, MdLocalHospital, MdEmergency } from 'react-icons/md';
+import { Playfair_Display } from 'next/font/google';
+
+const playfair = Playfair_Display({ 
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
 
 type Language = 'en' | 'hi' | 'kn';
 
@@ -205,8 +213,8 @@ const Home = () => {
         }`}>
           <div className="container mx-auto px-4 flex justify-between items-center">
             <div className="flex items-center">
-              <span className="text-3xl md:text-4xl font-black bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] hover:from-cyan-200 hover:via-blue-200 hover:to-white transition-all duration-300">
-                GrahmeenHealth
+              <span className={`text-5xl md:text-6xl font-black bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-400 bg-clip-text text-transparent drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] hover:from-orange-400 hover:via-yellow-300 hover:to-amber-400 transition-all duration-300 tracking-wider ${playfair.className}`}>
+                Grahmeen Health
               </span>
             </div>
             <div className="flex items-center space-x-4 mr-2">
@@ -256,6 +264,52 @@ const Home = () => {
             animate="animate"
             variants={staggerContainer}
           >
+            {/* Floating Medical Icons */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <motion.div
+                className="absolute top-20 left-10"
+                animate={{ 
+                  y: [0, -20, 0],
+                  rotate: [0, 5, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <FaStethoscope className="w-8 h-8 text-cyan-300/30" />
+              </motion.div>
+              <motion.div
+                className="absolute top-40 right-20"
+                animate={{ 
+                  y: [0, 20, 0],
+                  rotate: [0, -5, 0]
+                }}
+                transition={{ 
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <FaHospital className="w-8 h-8 text-blue-300/30" />
+              </motion.div>
+              <motion.div
+                className="absolute bottom-20 left-20"
+                animate={{ 
+                  y: [0, -15, 0],
+                  rotate: [0, 5, 0]
+                }}
+                transition={{ 
+                  duration: 4.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <FaAmbulance className="w-8 h-8 text-purple-300/30" />
+              </motion.div>
+            </div>
+
             <motion.div 
               className="flex justify-center mb-8"
               initial={{ scale: 0 }}
@@ -270,14 +324,58 @@ const Home = () => {
                   className="animate-float"
                   style={{ objectFit: 'contain' }}
                 />
+                <motion.div
+                  className="absolute inset-0 rounded-full bg-cyan-500/20 blur-xl"
+                  animate={{ 
+                    scale: [1, 1.2, 1],
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
               </div>
             </motion.div>
+
             <motion.h1 
               className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-200 to-blue-200 text-transparent bg-clip-text drop-shadow-[0_2px_2px_rgba(0,0,0,0.3)] leading-tight"
               variants={fadeIn}
             >
               {t.hero.title}
             </motion.h1>
+
+            {/* Animated Stats */}
+            <motion.div 
+              className="grid grid-cols-3 gap-8 mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <motion.div
+                className="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10"
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="text-3xl font-bold text-cyan-300 mb-2">24/7</div>
+                <div className="text-white/80">Support</div>
+              </motion.div>
+              <motion.div
+                className="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10"
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="text-3xl font-bold text-blue-300 mb-2">100+</div>
+                <div className="text-white/80">Doctors</div>
+              </motion.div>
+              <motion.div
+                className="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10"
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="text-3xl font-bold text-purple-300 mb-2">50K+</div>
+                <div className="text-white/80">Patients</div>
+              </motion.div>
+            </motion.div>
+
             <motion.div
               className="relative mb-12"
               variants={fadeIn}
@@ -306,38 +404,9 @@ const Home = () => {
                   <span className="text-sm text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.3)]">24/7 Support</span>
                 </div>
               </motion.div>
-              <motion.div
-                className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 text-cyan-500 opacity-50"
-                animate={{ 
-                  x: [0, 10, 0],
-                  opacity: [0.5, 0.8, 0.5]
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                <FaHeartbeat className="w-full h-full" />
-              </motion.div>
-              <motion.div
-                className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 text-blue-500 opacity-50"
-                animate={{ 
-                  x: [0, -10, 0],
-                  opacity: [0.5, 0.8, 0.5]
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1
-                }}
-              >
-                <FaHeartbeat className="w-full h-full" />
-              </motion.div>
             </motion.div>
             
-            {/* Doctor/Patient Options */}
+            {/* Doctor/Patient Options with Enhanced Animation */}
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-12">
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -346,10 +415,15 @@ const Home = () => {
               >
                 <Link
                   href="/register?role=doctor"
-                  className="group flex items-center justify-center bg-gradient-to-r from-rose-500 to-pink-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-rose-500/30 transition-all text-lg font-semibold"
+                  className="group flex items-center justify-center bg-gradient-to-r from-rose-500 to-pink-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-rose-500/30 transition-all text-lg font-semibold relative overflow-hidden"
                 >
-                  <FaUserMd className="h-6 w-6 mr-3 animate-pulse" />
-                  {t.hero.doctorButton}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-rose-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                    initial={false}
+                    whileHover={{ scale: 1.1 }}
+                  />
+                  <FaUserMd className="h-6 w-6 mr-3 animate-pulse relative z-10" />
+                  <span className="relative z-10">{t.hero.doctorButton}</span>
                 </Link>
               </motion.div>
               
@@ -360,10 +434,15 @@ const Home = () => {
               >
                 <Link
                   href="/register?role=patient"
-                  className="group flex items-center justify-center bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-pink-500/30 transition-all text-lg font-semibold"
+                  className="group flex items-center justify-center bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white px-8 py-4 rounded-xl hover:shadow-lg hover:shadow-pink-500/30 transition-all text-lg font-semibold relative overflow-hidden"
                 >
-                  <FaUserInjured className="h-6 w-6 mr-3 animate-pulse" />
-                  {t.hero.patientButton}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-pink-600 to-fuchsia-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                    initial={false}
+                    whileHover={{ scale: 1.1 }}
+                  />
+                  <FaUserInjured className="h-6 w-6 mr-3 animate-pulse relative z-10" />
+                  <span className="relative z-10">{t.hero.patientButton}</span>
                 </Link>
               </motion.div>
             </div>
