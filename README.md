@@ -39,7 +39,7 @@ A modern healthcare platform designed to bridge the gap between healthcare provi
 3. Set up environment variables:
    Create a `.env.local` file with the following variables:
    ```
-   MONGODB_URI="mongodb://localhost:27017/"
+   MONGODB_URI=mongodb_connection_string
    NEXTAUTH_SECRET=your_nextauth_secret
    NEXTAUTH_URL=http://localhost:3000
    GOOGLE_AI_API_KEY=your_api_key 
