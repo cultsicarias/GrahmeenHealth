@@ -90,134 +90,67 @@ interface Condition {
   symptoms: string[];
 }
 
-export function calculateEmergencyRating(
-  symptoms: string[],
-  severity: string,
-  age: number,
-  gender: string
-): number {
-  // Base emergency rating based on severity
-  let rating = 0;
-  switch (severity.toLowerCase()) {
-    case 'critical':
-      rating = 9;
-      break;
-    case 'severe':
-      rating = 7;
-      break;
-    case 'moderate':
-      rating = 5;
-      break;
-    case 'mild':
-      rating = 3;
-      break;
-    default:
-      rating = 1;
-  }
+export function calculateEmergencyRating(symptoms: string[], severity: string): number {
+  const severityMap: { [key: string]: number } = {
+    mild: 1,
+    moderate: 3,
+    severe: 6,
+    critical: 9
+  };
 
-  // Adjust rating based on age
-  if (age < 12 || age > 65) {
-    rating += 1;
-  }
+  const symptomWeights: { [key: string]: number } = {
+    'chest pain': 8,
+    'shortness of breath': 7,
+    'severe bleeding': 9,
+    'loss of consciousness': 9,
+    'severe head injury': 8,
+    'seizure': 8,
+    'stroke symptoms': 9,
+    'severe burns': 8,
+    'fever': 4,
+    'cough': 3,
+    'headache': 3,
+    'fatigue': 2
+  };
 
-  // Adjust rating based on number of symptoms
-  if (symptoms.length > 5) {
-    rating += 1;
-  }
+  const baseRating = severityMap[severity.toLowerCase()] || 3;
+  const symptomRating = symptoms.reduce((total, symptom) => {
+    return total + (symptomWeights[symptom.toLowerCase()] || 2);
+  }, 0) / symptoms.length;
 
-  // Ensure rating is between 1 and 10
-  return Math.min(Math.max(rating, 1), 10);
+  return Math.min(10, Math.max(1, (baseRating + symptomRating) / 2));
 }
 
-export function predictPossibleConditions(
-  symptoms: string[],
-  severity: string,
-  medicalHistory: string[] = [],
-  familyHistory: string[] = []
-): string[] {
-  // This is a simplified version - in a real application, this would use
-  // machine learning models or medical knowledge bases
-  const conditions: Condition[] = [
-    {
-      name: 'Common Cold',
-      probability: 0.7,
-      severity: 'mild',
-      symptoms: ['cough', 'sore throat', 'runny nose', 'fever'],
-    },
-    {
-      name: 'Influenza',
-      probability: 0.6,
-      severity: 'moderate',
-      symptoms: ['fever', 'body aches', 'fatigue', 'cough'],
-    },
-    {
-      name: 'Pneumonia',
-      probability: 0.5,
-      severity: 'severe',
-      symptoms: ['cough', 'fever', 'shortness of breath', 'chest pain'],
-    },
-    {
-      name: 'Bronchitis',
-      probability: 0.4,
-      severity: 'moderate',
-      symptoms: ['cough', 'wheezing', 'shortness of breath', 'chest discomfort'],
-    },
-    {
-      name: 'Sinusitis',
-      probability: 0.3,
-      severity: 'mild',
-      symptoms: ['facial pain', 'nasal congestion', 'headache', 'fever'],
-    },
-  ];
+export function predictPossibleConditions(symptoms: string[]): string[] {
+  const conditions: { [key: string]: string[] } = {
+    fever: ['Common Cold', 'Flu', 'COVID-19', 'Infection'],
+    cough: ['Common Cold', 'Flu', 'COVID-19', 'Bronchitis'],
+    headache: ['Migraine', 'Tension Headache', 'Sinusitis'],
+    fatigue: ['Anemia', 'Depression', 'Chronic Fatigue Syndrome'],
+    'chest pain': ['Angina', 'Heart Attack', 'Pneumonia'],
+    'shortness of breath': ['Asthma', 'COPD', 'Heart Failure']
+  };
 
-  // Filter conditions based on symptoms and severity
-  const matchingConditions = conditions
-    .filter(condition => {
-      const hasMatchingSymptoms = condition.symptoms.some(symptom =>
-        symptoms.some(s => s.toLowerCase().includes(symptom.toLowerCase()))
-      );
-      const severityMatches = condition.severity === severity;
-      return hasMatchingSymptoms && severityMatches;
-    })
-    .sort((a, b) => b.probability - a.probability)
-    .slice(0, 3)
-    .map(condition => condition.name);
+  const possibleConditions = new Set<string>();
+  symptoms.forEach((symptom) => {
+    const condition = conditions[symptom.toLowerCase()];
+    if (condition) {
+      condition.forEach((c) => possibleConditions.add(c));
+    }
+  });
 
-  return matchingConditions;
+  return Array.from(possibleConditions);
 }
 
-export function estimateAppointmentDuration(
-  symptoms: string[],
-  severity: string,
-  possibleConditions: string[]
-): number {
-  // Base duration in minutes
-  let duration = 15;
+export function estimateAppointmentDuration(severity: string): number {
+  const durationMap: { [key: string]: number } = {
+    mild: 15,
+    moderate: 30,
+    severe: 45,
+    critical: 60
+  };
 
-  // Adjust based on severity
-  switch (severity.toLowerCase()) {
-    case 'critical':
-      duration += 30;
-      break;
-    case 'severe':
-      duration += 20;
-      break;
-    case 'moderate':
-      duration += 15;
-      break;
-    case 'mild':
-      duration += 10;
-      break;
-  }
-
-  // Adjust based on number of symptoms
-  duration += symptoms.length * 5;
-
-  // Adjust based on number of possible conditions
-  duration += possibleConditions.length * 10;
-
-  // Ensure minimum duration of 15 minutes
-  return Math.max(duration, 15);
+  return durationMap[severity.toLowerCase()] || 30;
 }
 
 // Generate recommendations based on symptoms and severity

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { calculateEmergencyRating, predictPossibleConditions, estimateAppointmentDuration, generateRecommendations } from '@/lib/earlyDetection';
+import { calculateEmergencyRating, predictPossibleConditions, estimateAppointmentDuration } from '@/lib/earlyDetection';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -40,27 +40,19 @@ export async function POST(req: Request) {
       },
     });
 
-    // TODO: Implement AI analysis logic here
-    // For now, we'll just return a mock analysis
-    const mockAnalysis = {
-      riskLevel: 'low',
-      potentialConditions: ['Common cold', 'Seasonal allergies'],
-      recommendations: [
-        'Get plenty of rest',
-        'Stay hydrated',
-        'Monitor symptoms',
-        'Consult a doctor if symptoms worsen',
-      ],
-    };
+    // Calculate emergency rating and possible conditions
+    const emergencyRating = calculateEmergencyRating(symptoms, severity);
+    const possibleConditions = predictPossibleConditions(symptoms);
+    const recommendations = generateRecommendations(severity, possibleConditions, emergencyRating);
 
     // Update analysis with results
     const updatedAnalysis = await prisma.earlyDetection.update({
       where: { id: analysis.id },
       data: {
         status: 'completed',
-        riskLevel: mockAnalysis.riskLevel,
-        potentialConditions: mockAnalysis.potentialConditions,
-        recommendations: mockAnalysis.recommendations,
+        riskLevel: emergencyRating > 7 ? 'high' : emergencyRating > 4 ? 'medium' : 'low',
+        potentialConditions: possibleConditions,
+        recommendations: recommendations,
       },
     });
 
@@ -72,77 +64,6 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
-
-function generatePossibleConditions(symptoms: string[]): string[] {
-  // This is a simplified version. In a real application, you would use
-  // a more sophisticated algorithm or ML model to determine possible conditions
-  const conditions: { [key: string]: string[] } = {
-    fever: ['Common Cold', 'Flu', 'COVID-19', 'Infection'],
-    cough: ['Common Cold', 'Flu', 'COVID-19', 'Bronchitis'],
-    headache: ['Migraine', 'Tension Headache', 'Sinusitis'],
-    fatigue: ['Anemia', 'Depression', 'Chronic Fatigue Syndrome'],
-    'chest pain': ['Angina', 'Heart Attack', 'Pneumonia'],
-    'shortness of breath': ['Asthma', 'COPD', 'Heart Failure'],
-  };
-
-  const possibleConditions = new Set<string>();
-  symptoms.forEach((symptom) => {
-    const condition = conditions[symptom.toLowerCase()];
-    if (condition) {
-      condition.forEach((c) => possibleConditions.add(c));
-    }
-  });
-
-  return Array.from(possibleConditions);
-}
-
-function generateRecommendations(
-  severity: string,
-  possibleConditions: string[],
-  emergencyRating: number
-): string[] {
-  const recommendations: string[] = [];
-
-  if (emergencyRating >= 8) {
-    recommendations.push('Seek immediate medical attention');
-  } else if (emergencyRating >= 5) {
-    recommendations.push('Schedule a doctor appointment within 24 hours');
-  } else {
-    recommendations.push('Monitor symptoms and rest');
-  }
-
-  if (possibleConditions.includes('COVID-19')) {
-    recommendations.push('Get tested for COVID-19');
-    recommendations.push('Self-isolate until test results are available');
-  }
-
-  if (possibleConditions.includes('Flu')) {
-    recommendations.push('Get tested for influenza');
-    recommendations.push('Stay hydrated and rest');
-  }
-
-  if (possibleConditions.includes('Heart Attack')) {
-    recommendations.push('Call emergency services immediately');
-    recommendations.push('Take aspirin if available and not allergic');
-  }
-
-  recommendations.push('Stay hydrated');
-  recommendations.push('Get adequate rest');
-  recommendations.push('Monitor symptoms for any changes');
-
-  return recommendations;
-}
-
-function calculateEstimatedDuration(severity: string): number {
-  const durationMap: { [key: string]: number } = {
-    mild: 3,
-    moderate: 7,
-    severe: 14,
-    critical: 30,
-  };
-
-  return durationMap[severity] || 7;
 }
 
 export async function GET(req: Request) {
@@ -178,21 +99,43 @@ export async function GET(req: Request) {
   }
 }
 
-export async function GET() {
-  try {
-    // Fetch all analyses from the database
-    const analyses = await prisma.earlyDetection.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
+function generateRecommendations(
+  severity: string,
+  possibleConditions: string[],
+  emergencyRating: number
+): string[] {
+  const recommendations: string[] = [];
 
-    return NextResponse.json({ data: analyses });
-  } catch (error) {
-    console.error('Error fetching early detection analyses:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch analyses' },
-      { status: 500 }
-    );
+  // Add severity-based recommendations
+  if (severity === 'high' || emergencyRating > 7) {
+    recommendations.push('Seek immediate medical attention');
+    recommendations.push('Call emergency services if symptoms worsen');
+  } else if (severity === 'medium' || emergencyRating > 4) {
+    recommendations.push('Schedule a doctor appointment within 24-48 hours');
+    recommendations.push('Monitor symptoms closely');
+  } else {
+    recommendations.push('Schedule a routine check-up');
+    recommendations.push('Monitor symptoms and seek help if they worsen');
   }
+
+  // Add condition-specific recommendations
+  possibleConditions.forEach(condition => {
+    switch (condition.toLowerCase()) {
+      case 'common cold':
+        recommendations.push('Get plenty of rest');
+        recommendations.push('Stay hydrated');
+        break;
+      case 'flu':
+        recommendations.push('Take antiviral medication if prescribed');
+        recommendations.push('Stay home to prevent spread');
+        break;
+      case 'covid-19':
+        recommendations.push('Get tested for COVID-19');
+        recommendations.push('Self-isolate until test results');
+        break;
+      // Add more condition-specific recommendations as needed
+    }
+  });
+
+  return recommendations;
 } 
