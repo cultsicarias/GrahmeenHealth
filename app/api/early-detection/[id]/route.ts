@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { calculateEmergencyRating, predictPossibleConditions } from '@/lib/earlyDetection';
 
 export async function GET(
   request: Request,
@@ -91,6 +92,7 @@ export async function PUT(
     const body = await request.json();
     const {
       symptoms,
+      severity,
       age,
       gender,
       medicalHistory,
@@ -118,10 +120,10 @@ export async function PUT(
       );
     }
 
-    // Analyze symptoms and determine severity and risk level
-    const severity = determineSeverity(symptoms);
-    const riskLevel = determineRiskLevel(symptoms, age, gender, medicalHistory, familyHistory, lifestyle);
-    const recommendations = generateRecommendations(severity, riskLevel);
+    // Calculate emergency rating and possible conditions
+    const emergencyRating = calculateEmergencyRating(symptoms, severity);
+    const possibleConditions = predictPossibleConditions(symptoms);
+    const recommendations = generateRecommendations(severity, emergencyRating > 7 ? 'high' : emergencyRating > 4 ? 'medium' : 'low');
 
     // Update the analysis in the database
     const updatedAnalysis = await prisma.earlyDetection.update({
@@ -129,13 +131,14 @@ export async function PUT(
       data: {
         symptoms,
         severity,
-        riskLevel,
-        recommendations,
-        age,
+        age: parseInt(age),
         gender,
         medicalHistory,
         familyHistory,
         lifestyle,
+        riskLevel: emergencyRating > 7 ? 'high' : emergencyRating > 4 ? 'medium' : 'low',
+        potentialConditions: possibleConditions,
+        recommendations: recommendations.split('\n\n'),
       },
     });
 
